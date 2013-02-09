@@ -1,4 +1,6 @@
 <?php
+include 'conf.php';
+
 $conf = new Configuration();
 
 header('Content-type: text/xml');
@@ -50,26 +52,26 @@ function date3339($timestamp = 0) {
         if ($i > 0) {
             echo "</entry>";
         }
-        $articleDate = $row['posted'];
+        $articleDate = $row[$conf->db_date];
         $articleDateRfc3339 = date3339(strtotime($articleDate));
         echo "<entry>";
         echo "<title>";
-        echo $row['title'];
+        echo $row['Title'];
         echo "</title>";
-        echo "<link type='text/html' href='http://www.fishinhole.com/reports/report.php?id=" . $row['id'] . "'/>";
+        echo "<link type='text/html' href='http://blog.ahughes.org/?p=" . $row[$conf->db_id] . "'/>";
         echo "<id>";
-        echo "tag:fishinhole.com,2008:http://www.fishinhole.com/reports/wreport.php?id=" . $row['id'];
+        echo "tag:blog.ahughes.org,2012:http://blog.ahughes.org/?p=" . $row[$conf->db_id];
         echo "</id>";
         echo "<updated>";
         echo $articleDateRfc3339;
         echo "</updated>";
         echo "<author>";
         echo "<name>";
-        echo $row['author'];
+        echo $row['Author'];
         echo "</name>";
         echo "</author>";
         echo "<summary>";
-        echo $row['subtitle'];
+        echo $row['Content'];
         echo "</summary>";
         $i++;
     }

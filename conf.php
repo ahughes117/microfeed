@@ -10,13 +10,27 @@ class Configuration {
     //database user
     public $db_usr = 'minifeed';
     //database password
-    public $db_pass = 'deefinim117';
+    public $db_pass = 'password';
     //database schema
     public $db_schema = 'miniblog';
-    //database query (includes tables etc)
-    public $db_query = 'SELECT miniID, Title, Title, Subtitle, Author, Posted
+    
+    //database table structure
+    public $db_id = 'miniID';
+    public $db_title = 'Title';
+    public $db_subtitle = 'Subtitle';
+    public $db_content = 'Content';
+    public $db_author = 'Author';
+    public $db_date = 'DatePosted';
+    
+    //database query (includes tables etc)    
+    /*public $db_query = "SELECT $db_id , $db_title , $db_subtitle , $db_content , $db_author , $db_date ";
+           $db_query .= "FROM $db_schema ";
+            "ORDER BY $db_date DESC LIMIT 25";*/
+    
+    public $db_query = "SELECT miniID, Title, Subtitle, Content, Author, DatePosted 
         FROM miniblog 
-        ORDER BY POST DESC LIMIT 25';
+        ORDER BY DatePosted DESC LIMIT 25 ";
+           
     
     //feed title
     public $fd_title = "Alex Hughes' Minifeed";
