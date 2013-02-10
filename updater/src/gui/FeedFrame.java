@@ -48,7 +48,8 @@ public class FeedFrame extends GUI {
     }
 
     public void loadFeed() {
-        feedIDL.setText(feedIDL.getText() + feed.getMicroID());
+        feedIDL.setText("" + feed.getMicroID());
+        timestampL.setText(feed.getDatePosted().toString());
         authorF.setText(feed.getAuthor());
         titleF.setText(feed.getTitle());
         contentArea.setText(feed.getContent());
@@ -69,7 +70,7 @@ public class FeedFrame extends GUI {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        feedIDL = new javax.swing.JLabel();
+        feedL = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -77,6 +78,9 @@ public class FeedFrame extends GUI {
         jScrollPane1 = new javax.swing.JScrollPane();
         contentArea = new javax.swing.JTextArea();
         authorF = new javax.swing.JTextField();
+        dateL = new javax.swing.JLabel();
+        timestampL = new javax.swing.JLabel();
+        feedIDL = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
@@ -86,7 +90,7 @@ public class FeedFrame extends GUI {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Feed Details"));
 
-        feedIDL.setText("Feed ID: ");
+        feedL.setText("Feed ID: ");
 
         jLabel2.setText("Author:");
 
@@ -100,6 +104,12 @@ public class FeedFrame extends GUI {
         contentArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(contentArea);
 
+        dateL.setText("Date: ");
+
+        timestampL.setText("null");
+
+        feedIDL.setText("null");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,32 +117,43 @@ public class FeedFrame extends GUI {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(feedIDL)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3)
-                                    .addComponent(jLabel2))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(titleF)
-                                    .addComponent(authorF)))))
+                                    .addComponent(jLabel2)))
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                            .addComponent(titleF)
+                            .addComponent(authorF)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel4)
-                        .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(feedL)
+                        .addGap(18, 18, 18)
+                        .addComponent(feedIDL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(dateL)
+                        .addGap(18, 18, 18)
+                        .addComponent(timestampL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(feedIDL)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(feedL)
+                    .addComponent(feedIDL))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(dateL)
+                    .addComponent(timestampL))
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(authorF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -142,10 +163,8 @@ public class FeedFrame extends GUI {
                     .addComponent(titleF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -172,7 +191,7 @@ public class FeedFrame extends GUI {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -202,7 +221,7 @@ public class FeedFrame extends GUI {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -233,7 +252,9 @@ public class FeedFrame extends GUI {
     private javax.swing.JTextField authorF;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JTextArea contentArea;
+    private javax.swing.JLabel dateL;
     private javax.swing.JLabel feedIDL;
+    private javax.swing.JLabel feedL;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -241,6 +262,7 @@ public class FeedFrame extends GUI {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okBtn;
+    private javax.swing.JLabel timestampL;
     private javax.swing.JTextField titleF;
     // End of variables declaration//GEN-END:variables
 }

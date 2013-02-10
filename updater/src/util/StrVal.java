@@ -25,7 +25,7 @@ public class StrVal {
         int current = 0;
         for (int i = 0; i < input.length(); i++) {
             char cur = input.charAt(i);
-            if (cur != '\'') {
+            if (cur != '\'' && cur != '\"') {
                 r.setCharAt(current++, cur);
             }
         }
@@ -80,7 +80,6 @@ public class StrVal {
 
         Scanner scanner = new Scanner(aSqlDate);
         scanner.useDelimiter("-");
-
 
         while (scanner.hasNext()) {
             year = scanner.next();
