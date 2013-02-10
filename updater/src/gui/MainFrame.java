@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -16,7 +17,7 @@ import sql.*;
 import util.*;
 
 /**
- * The mainframe which contains the main -and only- functionality for the
+ * The mainframe which contains the main -and only- user interface functionality for the
  * project
  *
  * @author Alex Hughes <alexhughes117@gmail.com>
@@ -46,6 +47,7 @@ public class MainFrame extends GUI {
             if (isSchemaCompatible()) {
                 loadFeeds();
                 loadAuthors();
+                loadDraft();
             } else {
                 MesDial.dbSchemaError(this);
             }
@@ -83,6 +85,24 @@ public class MainFrame extends GUI {
             authorCombo.addItem((String) fetcher.getAuthors().get(i));
         }
     }
+    
+    /**
+     * This function loads the latest draft from the database.
+     * @throws SQLException 
+     */
+    public void loadDraft() throws SQLException {
+        Feed draft = fetcher.fetchDraft();
+        
+        if(draft != null) {
+            authorCombo.setSelectedItem(draft.getAuthor());
+            titleF.setText(draft.getTitle());
+            contentArea.setText(draft.getContent());
+            
+            statusL.setText("Latest draft loaded.");
+        } else {
+            statusL.setText("No drafts available.");
+        }
+    }
 
     private void shutdown() {
         int answer = MesDial.exitQuestion(this);
@@ -107,6 +127,47 @@ public class MainFrame extends GUI {
         } catch (SQLException ex) {
             MesDial.conError(this);
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void createFeed(boolean isDraft) {
+        
+        //setting -1 as status, it's not a draft nor a post yet
+        Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()), 
+                StrVal.sntS(titleF.getText()), StrVal.sntS(contentArea.getText()), -1);
+        
+        //setting the appropriate status
+        if(isDraft){
+            feed.setStatus(0);        
+        } else {
+            feed.setStatus(1);
+        }
+        
+        //inserting in the database the created field.
+        try {
+            fetcher.createFeed(feed);
+                                    
+            //creating the appropriate message for the user
+            if(isDraft) {
+                statusL.setText("Draft saved successfully! || " 
+                        + new Date());
+            } else {
+                MesDial.postSuccess(this);
+            }
+        } catch (SQLException ex) {
+            MesDial.conError(this);
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        //clearing fields - drafts
+        if(!isDraft) {
+            titleF.setText("");
+            contentArea.setText("");
+            try {
+                fetcher.cleanDrafts();
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -134,8 +195,11 @@ public class MainFrame extends GUI {
         jScrollPane1 = new javax.swing.JScrollPane();
         contentArea = new javax.swing.JTextArea();
         authorCombo = new javax.swing.JComboBox();
+        jPanel3 = new javax.swing.JPanel();
+        statusL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Microfeed");
@@ -164,8 +228,18 @@ public class MainFrame extends GUI {
         });
 
         publishBtn.setText("Publish!");
+        publishBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                publishBtnActionPerformed(evt);
+            }
+        });
 
         draftBtn.setText("Save Draft");
+        draftBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                draftBtnActionPerformed(evt);
+            }
+        });
 
         previewBtn.setText("Preview");
         previewBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -229,7 +303,7 @@ public class MainFrame extends GUI {
                     .addComponent(authorLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addComponent(titleF)
                     .addComponent(authorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -248,8 +322,26 @@ public class MainFrame extends GUI {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contentLbl)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        statusL.setText("null");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(statusL)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(statusL)
         );
 
         javax.swing.GroupLayout newFeedPanelLayout = new javax.swing.GroupLayout(newFeedPanel);
@@ -258,10 +350,16 @@ public class MainFrame extends GUI {
             newFeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(newFeedPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(newFeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tinyfeedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(newFeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(newFeedPanelLayout.createSequentialGroup()
+                        .addGroup(newFeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(newFeedPanelLayout.createSequentialGroup()
+                                .addGap(5, 5, 5)
+                                .addComponent(tinyfeedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(2, 2, 2)))
+                .addContainerGap())
         );
         newFeedPanelLayout.setVerticalGroup(
             newFeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +368,9 @@ public class MainFrame extends GUI {
                 .addComponent(tinyfeedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         mainTabbedPanel.addTab("New", newFeedPanel);
@@ -283,20 +383,22 @@ public class MainFrame extends GUI {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 287, Short.MAX_VALUE)
+            .addGap(0, 319, Short.MAX_VALUE)
         );
 
-        mainTabbedPanel.addTab("Old", jPanel1);
+        mainTabbedPanel.addTab("All", jPanel1);
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Stream of Microfeeds"));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 287, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
         );
 
         mainTabbedPanel.addTab("Stream", jPanel2);
@@ -307,8 +409,8 @@ public class MainFrame extends GUI {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainTabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mainTabbedPanel)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,6 +446,14 @@ public class MainFrame extends GUI {
         
     }//GEN-LAST:event_newFeedPanelKeyTyped
 
+    private void draftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_draftBtnActionPerformed
+        createFeed(true);
+    }//GEN-LAST:event_draftBtnActionPerformed
+
+    private void publishBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publishBtnActionPerformed
+        createFeed(false);
+    }//GEN-LAST:event_publishBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox authorCombo;
     private javax.swing.JLabel authorLbl;
@@ -353,12 +463,15 @@ public class MainFrame extends GUI {
     private javax.swing.JButton draftBtn;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane mainTabbedPanel;
     private javax.swing.JPanel newFeedPanel;
     private javax.swing.JButton previewBtn;
     private javax.swing.JButton publishBtn;
     private javax.swing.JButton quitBtn;
+    private javax.swing.JLabel statusL;
     private javax.swing.JPanel tinyfeedPanel;
     private javax.swing.JTextField titleF;
     private javax.swing.JLabel titleLbl;

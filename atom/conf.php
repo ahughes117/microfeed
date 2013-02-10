@@ -6,18 +6,17 @@
 
 class Configuration {
     //database url
-    public $db_url = '83.212.100.114';
+    public $db_url = 'localhost';
     //database user
-    public $db_usr = 'minifeed';
+    public $db_usr = 'root';
     //database password
-    public $db_pass = 'password';
+    public $db_pass = 'AineGifi117';
     //database schema
-    public $db_schema = 'miniblog';
+    public $db_schema = 'microfeed';
     
     //database table structure
-    public $db_id = 'miniID';
+    public $db_id = 'microID';
     public $db_title = 'Title';
-    public $db_subtitle = 'Subtitle';
     public $db_content = 'Content';
     public $db_author = 'Author';
     public $db_date = 'DatePosted';
@@ -27,8 +26,8 @@ class Configuration {
            $db_query .= "FROM $db_schema ";
             "ORDER BY $db_date DESC LIMIT 25";*/
     
-    public $db_query = "SELECT miniID, Title, Subtitle, Content, Author, DatePosted 
-        FROM miniblog 
+    public $db_query = "SELECT microID, Title, Content, Author, DatePosted 
+        FROM microfeed 
         ORDER BY DatePosted DESC LIMIT 25 ";
            
     

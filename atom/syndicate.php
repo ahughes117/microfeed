@@ -36,12 +36,10 @@ function date3339($timestamp = 0) {
 
 <feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom"> 
     <title><?php $conf->fd_title ?></title> 
-    <subtitle><?php $conf->fd_subtitle ?></subtitle>
     <link <?php $conf->fd_link ?> /> 
     <updated><?php echo date3339(); ?></updated>
     <author> 
         <name> <?php $conf->auth_name ?></name>
-        <email><?php $conf->auth_email ?></email>
     </author>
     <id><?php $conf->fd_id ?></id> 
 

@@ -16,6 +16,9 @@ public class MesDial {
     private static String conError = "Error while attempting to connect with database. "
             + "Check your connection status and try again.";
     private static String conSuccess = "Connection Success!";
+    private static String draftSuccess = "Microfeed draft saved succesfully!";
+    private static String postSuccess = "Microfeed was published!";
+    
     private static String saveSuccess = "Database updated succesfully";
     private static String noRowSelected = "You have to choose a line.";
     private static String multipleRowsSelected = "You cannot edit/delete more than one line simultaneously.";
@@ -47,6 +50,14 @@ public class MesDial {
 
     public static void saveSuccess(GUI aFrame) {
         JOptionPane.showMessageDialog(aFrame, saveSuccess, "Success!", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void draftSuccess(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, draftSuccess, "Success!", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public static void postSuccess(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, postSuccess, "Success!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void conError(GUI aFrame) {
