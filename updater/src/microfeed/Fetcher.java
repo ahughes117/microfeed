@@ -59,12 +59,29 @@ public class Fetcher {
         con.sendUpdate(update);
     }
 
+    public Feed fetchFeed(int anID) throws SQLException {
+        Feed feed = null;
+
+        ResultSet feedR = con.sendQuery(""
+                + "SELECT * "
+                + "FROM microfeed "
+                + "WHERE microID = " + anID);
+
+        while (feedR.next()) {
+            feed = new Feed(feedR.getInt("microID"), feedR.getString("Author"),
+                    feedR.getString("Title"), feedR.getString("Content"),
+                    feedR.getTimestamp("DatePosted"), feedR.getInt("Status"));
+        }
+
+        return feed;
+    }
+
     /**
-     * This function fetches the latest draft from the database.
-     * If available it returns it, otherwise it returns null.
-     * 
+     * This function fetches the latest draft from the database. If available it
+     * returns it, otherwise it returns null.
+     *
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Feed fetchDraft() throws SQLException {
         Feed draft = null;
@@ -85,10 +102,10 @@ public class Fetcher {
     }
 
     /**
-     * This function cleans all draft posts from database.
-     * It is used after a post is made, to clean all previous draft versions.
-     * 
-     * @throws SQLException 
+     * This function cleans all draft posts from database. It is used after a
+     * post is made, to clean all previous draft versions.
+     *
+     * @throws SQLException
      */
     public void cleanDrafts() throws SQLException {
         con.sendUpdate(""

@@ -30,6 +30,7 @@ public class MesDial {
     private static String validGroupError = "Select or type in a valid group name.";
     private static String validDatabaseError = "You have to type in a valid database schema name";
     private static String dbSchemaError = "The database version is not compatible with the application version";
+    private static String rowSelectionError = "You have to pick exactly one row.";
     //
     private static String deleteQuestion = "Delete?";
     private static String exitQuestion = "Exit Minifeed Updater? Any unsaved changes will be lost.";
@@ -148,5 +149,9 @@ public class MesDial {
     
     public static void dbSchemaError(GUI aFrame) {
         JOptionPane.showMessageDialog(aFrame, dbSchemaError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void rowSelectionError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, rowSelectionError, "Error!", JOptionPane.ERROR_MESSAGE);
     }
 }

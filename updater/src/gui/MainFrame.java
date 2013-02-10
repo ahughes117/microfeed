@@ -17,8 +17,8 @@ import sql.*;
 import util.*;
 
 /**
- * The mainframe which contains the main -and only- user interface functionality for the
- * project
+ * The mainframe which contains the main -and only- user interface functionality
+ * for the project
  *
  * @author Alex Hughes <alexhughes117@gmail.com>
  */
@@ -85,19 +85,20 @@ public class MainFrame extends GUI {
             authorCombo.addItem((String) fetcher.getAuthors().get(i));
         }
     }
-    
+
     /**
      * This function loads the latest draft from the database.
-     * @throws SQLException 
+     *
+     * @throws SQLException
      */
     public void loadDraft() throws SQLException {
         Feed draft = fetcher.fetchDraft();
-        
-        if(draft != null) {
+
+        if (draft != null) {
             authorCombo.setSelectedItem(draft.getAuthor());
             titleF.setText(draft.getTitle());
             contentArea.setText(draft.getContent());
-            
+
             statusL.setText("Latest draft loaded.");
         } else {
             statusL.setText("No drafts available.");
@@ -129,27 +130,27 @@ public class MainFrame extends GUI {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void createFeed(boolean isDraft) {
-        
+
         //setting -1 as status, it's not a draft nor a post yet
-        Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()), 
+        Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()),
                 StrVal.sntS(titleF.getText()), StrVal.sntS(contentArea.getText()), -1);
-        
+
         //setting the appropriate status
-        if(isDraft){
-            feed.setStatus(0);        
+        if (isDraft) {
+            feed.setStatus(0);
         } else {
             feed.setStatus(1);
         }
-        
+
         //inserting in the database the created field.
         try {
             fetcher.createFeed(feed);
-                                    
+
             //creating the appropriate message for the user
-            if(isDraft) {
-                statusL.setText("Draft saved successfully! || " 
+            if (isDraft) {
+                statusL.setText("Draft saved successfully! || "
                         + new Date());
             } else {
                 MesDial.postSuccess(this);
@@ -158,9 +159,9 @@ public class MainFrame extends GUI {
             MesDial.conError(this);
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //clearing fields - drafts
-        if(!isDraft) {
+        if (!isDraft) {
             titleF.setText("");
             contentArea.setText("");
             try {
@@ -168,6 +169,33 @@ public class MainFrame extends GUI {
             } catch (SQLException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    /**
+     * This function fills the feed table. If all feeds option is selected, then
+     * it fetches all the feeds from the database.
+     *
+     * @param allFeeds
+     */
+    private void refreshFeedTable(boolean allFeeds) {
+        String query = ""
+                + "SELECT * "
+                + "FROM microfeed ";
+
+        if (!allFeeds) {
+            query += "WHERE Status = 1 "
+                    + "ORDER BY DatePosted DESC "
+                    + "LIMIT 25 ";
+        } else {
+            query += "ORDER BY DatePosted DESC ";
+        }
+
+        try {
+            TableParser.fillTable(query, feedTable, con);
+        } catch (SQLException ex) {
+            MesDial.conError(this);
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -198,6 +226,14 @@ public class MainFrame extends GUI {
         jPanel3 = new javax.swing.JPanel();
         statusL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        feedTable = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        editFeedBtn = new javax.swing.JButton();
+        deleteFeedBtn = new javax.swing.JButton();
+        allFeedsBtn = new javax.swing.JButton();
+        refreshFeedsBtn = new javax.swing.JButton();
+        quitBtn1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
 
@@ -261,7 +297,7 @@ public class MainFrame extends GUI {
                 .addComponent(previewBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -322,7 +358,7 @@ public class MainFrame extends GUI {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contentLbl)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -375,15 +411,102 @@ public class MainFrame extends GUI {
 
         mainTabbedPanel.addTab("New", newFeedPanel);
 
+        feedTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(feedTable);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        editFeedBtn.setText("Edit");
+        editFeedBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editFeedBtnActionPerformed(evt);
+            }
+        });
+
+        deleteFeedBtn.setText("Delete");
+        deleteFeedBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteFeedBtnActionPerformed(evt);
+            }
+        });
+
+        allFeedsBtn.setText("All Feeds");
+        allFeedsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                allFeedsBtnActionPerformed(evt);
+            }
+        });
+
+        refreshFeedsBtn.setText("Refresh");
+        refreshFeedsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshFeedsBtnActionPerformed(evt);
+            }
+        });
+
+        quitBtn1.setText("Quit");
+        quitBtn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitBtn1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(editFeedBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(deleteFeedBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(allFeedsBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(refreshFeedsBtn)
+                .addGap(13, 13, 13)
+                .addComponent(quitBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(editFeedBtn)
+                    .addComponent(deleteFeedBtn)
+                    .addComponent(allFeedsBtn)
+                    .addComponent(refreshFeedsBtn)
+                    .addComponent(quitBtn1))
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 319, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25))
         );
 
         mainTabbedPanel.addTab("All", jPanel1);
@@ -394,11 +517,11 @@ public class MainFrame extends GUI {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
         );
 
         mainTabbedPanel.addTab("Stream", jPanel2);
@@ -439,11 +562,9 @@ public class MainFrame extends GUI {
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-        
     }//GEN-LAST:event_formKeyTyped
 
     private void newFeedPanelKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newFeedPanelKeyTyped
-        
     }//GEN-LAST:event_newFeedPanelKeyTyped
 
     private void draftBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_draftBtnActionPerformed
@@ -454,23 +575,77 @@ public class MainFrame extends GUI {
         createFeed(false);
     }//GEN-LAST:event_publishBtnActionPerformed
 
+    private void quitBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitBtn1ActionPerformed
+        shutdown();
+    }//GEN-LAST:event_quitBtn1ActionPerformed
+
+    private void refreshFeedsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshFeedsBtnActionPerformed
+        refreshFeedTable(false);
+    }//GEN-LAST:event_refreshFeedsBtnActionPerformed
+
+    private void allFeedsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_allFeedsBtnActionPerformed
+        refreshFeedTable(true);
+    }//GEN-LAST:event_allFeedsBtnActionPerformed
+
+    private void deleteFeedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteFeedBtnActionPerformed
+        int answer = MesDial.deleteQuestion(this);
+
+        if (answer == JOptionPane.YES_OPTION) {
+            int[] rows = feedTable.getSelectedRows();
+            try {
+                for (int i = 0; i < rows.length; i++) {
+                    int microID = Integer.parseInt((String) feedTable.getValueAt(rows[i], 0));
+
+                    con.sendUpdate(""
+                            + "DELETE "
+                            + "FROM microfeed "
+                            + "WHERE microID = " + microID);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        refreshFeedTable(false);
+    }//GEN-LAST:event_deleteFeedBtnActionPerformed
+
+    private void editFeedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editFeedBtnActionPerformed
+        if(feedTable.getSelectedRowCount() == 1){
+            try {
+                Feed feed = fetcher.fetchFeed(Integer.parseInt((String)feedTable.getValueAt(feedTable.getSelectedRow(), 0)));
+                FeedFrame f = new FeedFrame(this, con, feed);
+            } catch (SQLException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            MesDial.rowSelectionError(this);
+        }
+    }//GEN-LAST:event_editFeedBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton allFeedsBtn;
     private javax.swing.JComboBox authorCombo;
     private javax.swing.JLabel authorLbl;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JTextArea contentArea;
     private javax.swing.JLabel contentLbl;
+    private javax.swing.JButton deleteFeedBtn;
     private javax.swing.JButton draftBtn;
+    private javax.swing.JButton editFeedBtn;
+    private javax.swing.JTable feedTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane mainTabbedPanel;
     private javax.swing.JPanel newFeedPanel;
     private javax.swing.JButton previewBtn;
     private javax.swing.JButton publishBtn;
     private javax.swing.JButton quitBtn;
+    private javax.swing.JButton quitBtn1;
+    private javax.swing.JButton refreshFeedsBtn;
     private javax.swing.JLabel statusL;
     private javax.swing.JPanel tinyfeedPanel;
     private javax.swing.JTextField titleF;

@@ -2,6 +2,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -18,9 +19,9 @@ public class StrVal {
 
     //This function removes all quotes characters(')
     public static String sntS(String input) {
-        StringBuffer r = new StringBuffer(input.length());
-
+        StringBuilder r = new StringBuilder();
         r.setLength(input.length());
+        
         int current = 0;
         for (int i = 0; i < input.length(); i++) {
             char cur = input.charAt(i);
@@ -71,5 +72,23 @@ public class StrVal {
             }
         }
         return hasDuplicates;
+    }
+    
+    public static String SqlStringToString(String aSqlDate) {
+        String date = "";
+        String day = null, month = null, year = null;
+
+        Scanner scanner = new Scanner(aSqlDate);
+        scanner.useDelimiter("-");
+
+
+        while (scanner.hasNext()) {
+            year = scanner.next();
+            month = scanner.next();
+            day = scanner.next();
+        }
+        date = day + "/" + month + "/" + year;
+
+        return date;
     }
 }
