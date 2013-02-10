@@ -108,7 +108,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Java - MySQL Minifeed Updater. Developed by Alex Hughes &lt;ahughes@ahughes.org&gt;"/>
+            <Property name="text" type="java.lang.String" value="Microfeed. Developed by Alex Hughes &lt;ahughes@ahughes.org&gt;"/>
           </Properties>
         </Component>
       </SubComponents>

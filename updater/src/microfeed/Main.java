@@ -1,4 +1,4 @@
-package updater;
+package microfeed;
 import gui.LoginFrame;
 /**
  * This is the desktop application for creating new feeds and updating the feed

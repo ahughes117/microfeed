@@ -75,7 +75,7 @@ public class LoginFrame extends GUI {
 
         StatusPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setText("Java - MySQL Minifeed Updater. Developed by Alex Hughes <ahughes@ahughes.org>");
+        jLabel1.setText("Microfeed. Developed by Alex Hughes <ahughes@ahughes.org>");
 
         javax.swing.GroupLayout StatusPanelLayout = new javax.swing.GroupLayout(StatusPanel);
         StatusPanel.setLayout(StatusPanelLayout);
