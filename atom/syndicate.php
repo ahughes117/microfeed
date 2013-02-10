@@ -56,9 +56,9 @@ function date3339($timestamp = 0) {
         echo "<title>";
         echo $row['Title'];
         echo "</title>";
-        echo "<link type='text/html' href='http://blog.ahughes.org/?p=" . $row[$conf->db_id] . "'/>";
+        echo "<link type='text/html' href='http://microfeed.ahughes.org/?p=" . $row[$conf->db_id] . "'/>";
         echo "<id>";
-        echo "tag:blog.ahughes.org,2012:http://blog.ahughes.org/?p=" . $row[$conf->db_id];
+        echo "tag:microfeed.ahughes.org,2012:http://microfeed.ahughes.org/?p=" . $row[$conf->db_id];
         echo "</id>";
         echo "<updated>";
         echo $articleDateRfc3339;

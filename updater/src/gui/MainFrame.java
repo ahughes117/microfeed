@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import microfeed.*;
 import sql.*;
 import util.*;
@@ -43,14 +45,11 @@ public class MainFrame extends GUI {
                 shutdown();
             }
         });
+        
         try {
-            if (isSchemaCompatible()) {
-                loadFeeds();
-                loadAuthors();
-                loadDraft();
-            } else {
-                MesDial.dbSchemaError(this);
-            }
+            loadFeeds();
+            loadAuthors();
+            loadDraft();
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -198,6 +197,16 @@ public class MainFrame extends GUI {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    /**
+     * This function checks whether the database schema is compatible with the
+     * application. Changes may arise to the database schema that are not
+     * synchronized with the application version.
+     *
+     */
+    public void checkSchema() {
+        
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -235,7 +244,14 @@ public class MainFrame extends GUI {
         refreshFeedsBtn = new javax.swing.JButton();
         quitBtn1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        panelCont = new javax.swing.JScrollPane();
+        mainMenu = new javax.swing.JMenuBar();
+        fileM = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        helpM = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Microfeed");
@@ -358,13 +374,13 @@ public class MainFrame extends GUI {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(contentLbl)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        statusL.setText("null");
+        statusL.setText(null);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -503,7 +519,7 @@ public class MainFrame extends GUI {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -511,20 +527,57 @@ public class MainFrame extends GUI {
 
         mainTabbedPanel.addTab("All", jPanel1);
 
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Stream of Microfeeds"));
+        panelCont.setBorder(javax.swing.BorderFactory.createTitledBorder("Stream of Microfeeds"));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)
         );
 
         mainTabbedPanel.addTab("Stream", jPanel2);
+
+        fileM.setText("File");
+
+        jMenuItem2.setText("Disconnect");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        fileM.add(jMenuItem2);
+
+        jMenuItem3.setText("Check DB Schema");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        fileM.add(jMenuItem3);
+
+        jMenuItem4.setText("Exit");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        fileM.add(jMenuItem4);
+
+        mainMenu.add(fileM);
+
+        helpM.setText("Help");
+
+        jMenuItem1.setText("About");
+        helpM.add(jMenuItem1);
+
+        mainMenu.add(helpM);
+
+        setJMenuBar(mainMenu);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -609,9 +662,9 @@ public class MainFrame extends GUI {
     }//GEN-LAST:event_deleteFeedBtnActionPerformed
 
     private void editFeedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editFeedBtnActionPerformed
-        if(feedTable.getSelectedRowCount() == 1){
+        if (feedTable.getSelectedRowCount() == 1) {
             try {
-                Feed feed = fetcher.fetchFeed(Integer.parseInt((String)feedTable.getValueAt(feedTable.getSelectedRow(), 0)));
+                Feed feed = fetcher.fetchFeed(Integer.parseInt((String) feedTable.getValueAt(feedTable.getSelectedRow(), 0)));
                 FeedFrame f = new FeedFrame(this, con, feed);
             } catch (SQLException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -620,6 +673,24 @@ public class MainFrame extends GUI {
             MesDial.rowSelectionError(this);
         }
     }//GEN-LAST:event_editFeedBtnActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        shutdown();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        try {
+            con.closeConnection();
+            this.dispose();
+            pFrame.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        checkSchema();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton allFeedsBtn;
@@ -632,15 +703,22 @@ public class MainFrame extends GUI {
     private javax.swing.JButton draftBtn;
     private javax.swing.JButton editFeedBtn;
     private javax.swing.JTable feedTable;
+    private javax.swing.JMenu fileM;
+    private javax.swing.JMenu helpM;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JMenuBar mainMenu;
     private javax.swing.JTabbedPane mainTabbedPanel;
     private javax.swing.JPanel newFeedPanel;
+    private javax.swing.JScrollPane panelCont;
     private javax.swing.JButton previewBtn;
     private javax.swing.JButton publishBtn;
     private javax.swing.JButton quitBtn;
