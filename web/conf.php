@@ -42,7 +42,7 @@ class Configuration {
     //feed link
     public $fd_link = 'http://192.168.1.118/microfeed/?microID=';
     //feed id
-    public $fd_id = 'tag:ahughes.org,2013:http://192.168.1.118/microfeed/?microID=';
+    public $fd_id = "tag:ahughes.org,2013:http://192.168.1.118/microfeed/microID=";
     
     //author name
     public $auth_name = "Alex Hughes";

@@ -44,7 +44,7 @@ function date3339($timestamp = 0) {
     <link <?php $conf->fd_link ?> /> 
     <updated><?php echo date3339(); ?></updated>
     <author> 
-        <name> <?php $conf->auth_name ?></name>
+        <name> <?php echo $conf->auth_name ?></name>
     </author>
     <id><?php $conf->fd_id ?></id> 
 

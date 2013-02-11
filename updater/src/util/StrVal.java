@@ -19,7 +19,7 @@ public class StrVal {
 
     //This function removes all quotes characters(')
     public static String sntS(String input) {
-        StringBuilder r = new StringBuilder();
+        StringBuilder r = new StringBuilder(input.length());
         r.setLength(input.length());
         
         int current = 0;
