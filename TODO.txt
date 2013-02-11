@@ -1,0 +1,7 @@
+TODO:
+ 
+-Update the insert statements to prepared statements
+-Soft code the queries in conf file
+-Create page for certain post out of url parameter
+-Create CSS to make the feed nicer
+

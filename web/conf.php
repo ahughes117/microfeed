@@ -30,14 +30,19 @@ class Configuration {
         WHERE Status = 1 
         ORDER BY DatePosted DESC 
         LIMIT 25 ";
+    
+    public $db_getFeed = "
+        SELECT * 
+        FROM microfeed
+        WHERE microID = ";
            
     
     //feed title
     public $fd_title = "Alex Hughes' Minifeed";
     //feed link
-    public $fd_link = 'href="http://microfeed.ahughes.org/" rel="self"';
+    public $fd_link = 'http://192.168.1.118/microfeed/?microID=';
     //feed id
-    public $fd_id = 'tag:ahughes.org,2013:http://microfeed.ahughes.org/syndication.php';
+    public $fd_id = 'tag:ahughes.org,2013:http://192.168.1.118/microfeed/?microID=';
     
     //author name
     public $auth_name = "Alex Hughes";

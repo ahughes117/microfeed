@@ -1,4 +1,9 @@
 <?php
+
+/*
+ * All functionality of the micro-atom-feed 
+ */
+
 include 'conf.php';
 
 $conf = new Configuration();
@@ -56,9 +61,9 @@ function date3339($timestamp = 0) {
         echo "<title>";
         echo $row['Title'];
         echo "</title>";
-        echo "<link type='text/html' href='http://microfeed.ahughes.org/?p=" . $row[$conf->db_id] . "'/>";
+        echo "<link type='text/html' href='". $conf->fd_link . $row[$conf->db_id] . "'/>";
         echo "<id>";
-        echo "tag:microfeed.ahughes.org,2012:http://microfeed.ahughes.org/?p=" . $row[$conf->db_id];
+        echo $conf->fd_id . $row[$conf->db_id];
         echo "</id>";
         echo "<updated>";
         echo $articleDateRfc3339;
