@@ -1,0 +1,27 @@
+@charset "utf-8";
+
+body {
+	background-color: #2E3C49;
+}
+
+.fd_content {
+	font-family: Tahoma, Geneva, sans-serif;
+	color: #ccc;
+}
+
+.fd_title {
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: large;
+	font-weight: bold;
+}
+
+a:link {
+	color:#FFC;
+}
+a:visited {
+	color:#ccc;
+}
+
+
+
+	
