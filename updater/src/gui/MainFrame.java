@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import microfeed.*;
+import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import sql.*;
 import util.*;
 
@@ -32,12 +33,15 @@ public class MainFrame extends GUI {
     private GUI pFrame;
     private Connector con;
     private Fetcher fetcher;
+    private HTMLEditorPane hep;
 
     public MainFrame(GUI aPreviousFrame, Connector aConnector) {
         pFrame = aPreviousFrame;
         con = aConnector;
         fetcher = new Fetcher(con);
 
+        hep = new HTMLEditorPane();
+        hep.setVisible(true);
         initComponents();
         this.addWindowListener(new WindowAdapter() {
 
@@ -46,6 +50,7 @@ public class MainFrame extends GUI {
             }
         });
         
+        contentPane.add(hep);
         try {
             loadFeeds();
             loadAuthors();
@@ -96,7 +101,7 @@ public class MainFrame extends GUI {
         if (draft != null) {
             authorCombo.setSelectedItem(draft.getAuthor());
             titleF.setText(draft.getTitle());
-            contentArea.setText(draft.getContent());
+            hep.setText(draft.getContent());
 
             statusL.setText("Latest draft loaded.");
         } else {
@@ -134,7 +139,7 @@ public class MainFrame extends GUI {
 
         //setting -1 as status, it's not a draft nor a post yet
         Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()),
-                StrVal.sntS(titleF.getText()), StrVal.sntS(contentArea.getText()), -1);
+                StrVal.sntS(titleF.getText()), hep.getText(), -1);
 
         //setting the appropriate status
         if (isDraft) {
@@ -162,7 +167,7 @@ public class MainFrame extends GUI {
         //clearing fields - drafts
         if (!isDraft) {
             titleF.setText("");
-            contentArea.setText("");
+            hep.setText("");
             try {
                 fetcher.cleanDrafts();
             } catch (SQLException ex) {
@@ -229,9 +234,8 @@ public class MainFrame extends GUI {
         titleF = new javax.swing.JTextField();
         titleLbl = new javax.swing.JLabel();
         contentLbl = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        contentArea = new javax.swing.JTextArea();
         authorCombo = new javax.swing.JComboBox();
+        contentPane = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
         statusL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -313,7 +317,7 @@ public class MainFrame extends GUI {
                 .addComponent(previewBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,12 +339,6 @@ public class MainFrame extends GUI {
 
         contentLbl.setText("Content:");
 
-        contentArea.setColumns(20);
-        contentArea.setLineWrap(true);
-        contentArea.setRows(5);
-        contentArea.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(contentArea);
-
         authorCombo.setEditable(true);
 
         javax.swing.GroupLayout tinyfeedPanelLayout = new javax.swing.GroupLayout(tinyfeedPanel);
@@ -355,9 +353,9 @@ public class MainFrame extends GUI {
                     .addComponent(authorLbl))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addComponent(titleF)
-                    .addComponent(authorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(authorCombo, 0, 365, Short.MAX_VALUE)
+                    .addComponent(contentPane))
                 .addContainerGap())
         );
         tinyfeedPanelLayout.setVerticalGroup(
@@ -373,8 +371,10 @@ public class MainFrame extends GUI {
                     .addComponent(titleF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(contentLbl)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE))
+                    .addGroup(tinyfeedPanelLayout.createSequentialGroup()
+                        .addComponent(contentLbl)
+                        .addGap(0, 136, Short.MAX_VALUE))
+                    .addComponent(contentPane))
                 .addContainerGap())
         );
 
@@ -514,14 +514,14 @@ public class MainFrame extends GUI {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -594,7 +594,7 @@ public class MainFrame extends GUI {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(mainTabbedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
+                .addComponent(mainTabbedPanel)
                 .addContainerGap())
         );
 
@@ -699,8 +699,8 @@ public class MainFrame extends GUI {
     private javax.swing.JComboBox authorCombo;
     private javax.swing.JLabel authorLbl;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JTextArea contentArea;
     private javax.swing.JLabel contentLbl;
+    private javax.swing.JScrollPane contentPane;
     private javax.swing.JButton deleteFeedBtn;
     private javax.swing.JButton draftBtn;
     private javax.swing.JButton editFeedBtn;
@@ -715,7 +715,6 @@ public class MainFrame extends GUI {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JMenuBar mainMenu;
     private javax.swing.JTabbedPane mainTabbedPanel;
