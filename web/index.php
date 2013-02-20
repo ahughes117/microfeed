@@ -21,7 +21,6 @@ This is the webpage-like presentable stream.
         $link = mysql_connect($conf->db_url, $conf->db_usr, $conf->db_pass)
                 or die('Could not connect: ' . mysql_error());
         
-        //or else get gibberish in your face.
         mysql_set_charset("utf8");
 
         mysql_select_db($conf->db_schema)

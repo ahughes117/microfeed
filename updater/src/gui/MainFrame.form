@@ -88,7 +88,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="mainTabbedPanel" pref="385" max="32767" attributes="0"/>
+              <Component id="mainTabbedPanel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -169,7 +169,7 @@
                           <Component id="previewBtn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="quitBtn" min="-2" pref="87" max="-2" attributes="0"/>
-                          <EmptySpace pref="60" max="32767" attributes="0"/>
+                          <EmptySpace pref="99" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -244,9 +244,9 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPane1" max="32767" attributes="0"/>
                               <Component id="titleF" max="32767" attributes="0"/>
-                              <Component id="authorCombo" alignment="0" max="32767" attributes="0"/>
+                              <Component id="authorCombo" alignment="0" pref="365" max="32767" attributes="0"/>
+                              <Component id="contentPane" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -267,10 +267,13 @@
                           </Group>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="contentLbl" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPane1" pref="135" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="contentLbl" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="136" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="contentPane" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -293,23 +296,6 @@
                     <Property name="text" type="java.lang.String" value="Content:"/>
                   </Properties>
                 </Component>
-                <Container class="javax.swing.JScrollPane" name="jScrollPane1">
-                  <AuxValues>
-                    <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                  </AuxValues>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                  <SubComponents>
-                    <Component class="javax.swing.JTextArea" name="contentArea">
-                      <Properties>
-                        <Property name="columns" type="int" value="20"/>
-                        <Property name="lineWrap" type="boolean" value="true"/>
-                        <Property name="rows" type="int" value="5"/>
-                        <Property name="wrapStyleWord" type="boolean" value="true"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
                 <Component class="javax.swing.JComboBox" name="authorCombo">
                   <Properties>
                     <Property name="editable" type="boolean" value="true"/>
@@ -318,6 +304,10 @@
                     </Property>
                   </Properties>
                 </Component>
+                <Container class="javax.swing.JScrollPane" name="contentPane">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                </Container>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel3">
@@ -374,7 +364,7 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanel4" max="32767" attributes="0"/>
-                          <Component id="jScrollPane3" max="32767" attributes="0"/>
+                          <Component id="jScrollPane3" pref="457" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -384,7 +374,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jScrollPane3" pref="257" max="32767" attributes="0"/>
+                      <Component id="jScrollPane3" pref="262" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
