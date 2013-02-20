@@ -12,8 +12,9 @@ This is the webpage-like presentable stream.
             echo $conf->fd_title;
             ?>
         </title>
+        <link href="style.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>
+    <body class="fd_content">
         <?php
         
         include 'page.php';
