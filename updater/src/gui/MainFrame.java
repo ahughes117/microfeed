@@ -50,7 +50,6 @@ public class MainFrame extends GUI {
             }
         });
         
-        contentPane.add(hep);
         try {
             loadFeeds();
             loadAuthors();
@@ -101,7 +100,7 @@ public class MainFrame extends GUI {
         if (draft != null) {
             authorCombo.setSelectedItem(draft.getAuthor());
             titleF.setText(draft.getTitle());
-            hep.setText(draft.getContent());
+            textArea.setText(draft.getContent());
 
             statusL.setText("Latest draft loaded.");
         } else {
@@ -139,7 +138,7 @@ public class MainFrame extends GUI {
 
         //setting -1 as status, it's not a draft nor a post yet
         Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()),
-                StrVal.sntS(titleF.getText()), hep.getText(), -1);
+                StrVal.sntS(titleF.getText()), textArea.getText(), -1);
 
         //setting the appropriate status
         if (isDraft) {
@@ -167,7 +166,7 @@ public class MainFrame extends GUI {
         //clearing fields - drafts
         if (!isDraft) {
             titleF.setText("");
-            hep.setText("");
+            textArea.setText("");
             try {
                 fetcher.cleanDrafts();
             } catch (SQLException ex) {
@@ -236,6 +235,7 @@ public class MainFrame extends GUI {
         contentLbl = new javax.swing.JLabel();
         authorCombo = new javax.swing.JComboBox();
         contentPane = new javax.swing.JScrollPane();
+        textArea = new javax.swing.JTextArea();
         jPanel3 = new javax.swing.JPanel();
         statusL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
@@ -340,6 +340,12 @@ public class MainFrame extends GUI {
         contentLbl.setText("Content:");
 
         authorCombo.setEditable(true);
+
+        textArea.setColumns(20);
+        textArea.setLineWrap(true);
+        textArea.setRows(5);
+        textArea.setWrapStyleWord(true);
+        contentPane.setViewportView(textArea);
 
         javax.swing.GroupLayout tinyfeedPanelLayout = new javax.swing.GroupLayout(tinyfeedPanel);
         tinyfeedPanel.setLayout(tinyfeedPanelLayout);
@@ -514,14 +520,14 @@ public class MainFrame extends GUI {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
@@ -535,11 +541,11 @@ public class MainFrame extends GUI {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 357, Short.MAX_VALUE)
+            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
         );
 
         mainTabbedPanel.addTab("Stream", jPanel2);
@@ -726,6 +732,7 @@ public class MainFrame extends GUI {
     private javax.swing.JButton quitBtn1;
     private javax.swing.JButton refreshFeedsBtn;
     private javax.swing.JLabel statusL;
+    private javax.swing.JTextArea textArea;
     private javax.swing.JPanel tinyfeedPanel;
     private javax.swing.JTextField titleF;
     private javax.swing.JLabel titleLbl;

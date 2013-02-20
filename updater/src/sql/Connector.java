@@ -17,7 +17,7 @@ public class Connector {
     public static boolean AUTOCOMMIT;
     public static boolean LOGGER;
     public static boolean QUERY;
-    protected static Connection connection;
+    protected Connection connection;
     private DBCredentials credentials;
     private static final String DATABASE_USER = "user";
     private static final String DATABASE_PASSWORD = "password";
@@ -96,6 +96,13 @@ public class Connector {
             System.out.println(aQuery);
         }
         return stmt.getGeneratedKeys();
+    }
+    
+    public PreparedStatement prepareStatement(String aStmt) throws SQLException {
+        PreparedStatement stmt = connection.prepareStatement(aStmt);
+        //stmt.set
+                
+        return stmt;
     }
 
     public void commit() throws SQLException {
