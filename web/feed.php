@@ -19,7 +19,7 @@ mysql_select_db($conf->db_schema)
 $result = mysql_query($conf->db_query)
         or die('Query failed: ' . mysql_error());
 
-echo "<?xml version='1.0' encoding='iso-8859-1' ?>";
+echo "<?xml version='1.0' encoding='UTF-8' ?>";
 
 function date3339($timestamp = 0) {
     if (!$timestamp) {
@@ -40,13 +40,13 @@ function date3339($timestamp = 0) {
 ?>
 
 <feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom"> 
-    <title><?php $conf->fd_title ?></title> 
-    <link <?php $conf->fd_link ?> /> 
+    <title><?php echo $conf->fd_title ?></title> 
+    <link href="http://microfeed.ahughes.org/microfeed/feed.php" rel="self" /> 
     <updated><?php echo date3339(); ?></updated>
     <author> 
         <name> <?php echo $conf->auth_name ?></name>
     </author>
-    <id><?php $conf->fd_id ?></id> 
+    <id><?php echo $conf->fd_id ?></id> 
 
 
     <?php
