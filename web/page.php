@@ -9,7 +9,7 @@ function fetchFeeds($conf) {
     $result = mysql_query($conf->db_query)
             or die('Query failed: ' . mysql_error());
 
-    echo "<p><strong>my latest microfeeds:</strong></p>";
+    echo '<p class = "fd_title">Alex Hughes || microfeeds: </p><p> </p>';
 
     $i = 0;
     while ($row = mysql_fetch_array($result)) {
@@ -35,6 +35,12 @@ function fetchFeed($conf, $id) {
         echo "<p><a href='" . $conf->fd . "'>Back to microfeed stream </a></p>";
         
         $i++;
+    }
+    if($i==0){
+        echo "<p><strong>Either you are trying to inject SQL or the thing you 
+            are looking for doesn't exist <anymore, hasn't ever existed, 
+            whatever>.</strong></p>";
+        echo "<p><a href='" . $conf->fd . "'>Back to microfeed stream </a></p>";
     }
 }
 
