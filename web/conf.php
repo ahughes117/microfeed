@@ -10,7 +10,7 @@ class Configuration {
     //database user
     public $db_usr = 'root';
     //database password
-    public $db_pass = 'AineGifi117';
+    public $db_pass = 'sth';
     //database schema
     public $db_schema = 'microfeed';
     
@@ -28,8 +28,7 @@ class Configuration {
         SELECT * 
         FROM microfeed 
         WHERE Status = 1 
-        ORDER BY DatePosted DESC 
-        LIMIT 25 ";
+        ORDER BY DatePosted DESC "; 
     
     public $db_getFeed = "
         SELECT * 

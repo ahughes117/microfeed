@@ -4,9 +4,9 @@
  * Functionality for feed webpage.
  */
 
-function fetchFeeds($conf) {
+function fetchFeeds($conf, $number) {
 
-    $result = mysql_query($conf->db_query)
+    $result = mysql_query($conf->db_query . "LIMIT " . $number)
             or die('Query failed: ' . mysql_error());
 
     echo '<p class = "fd_title">Alex Hughes || microfeeds: </p><p> </p>';
@@ -19,6 +19,7 @@ function fetchFeeds($conf) {
         echo '<p class="fd_content"><blockquote>' . $row[$conf->db_content] . '</blockquote></p>';
         $i++;
     }
+    return $number;
 }
 
 function fetchFeed($conf, $id) {
