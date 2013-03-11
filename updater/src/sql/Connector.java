@@ -77,6 +77,11 @@ public class Connector {
         return rs;
     }
 
+    public PreparedStatement prepareStatement(String aQuery) throws SQLException {
+        PreparedStatement ps = connection.prepareStatement(aQuery);
+        return ps;
+    }
+
     public ResultSet sendUpdate(String aQuery) throws SQLException {
         Statement stmt;
 
@@ -96,13 +101,6 @@ public class Connector {
             System.out.println(aQuery);
         }
         return stmt.getGeneratedKeys();
-    }
-    
-    public PreparedStatement prepareStatement(String aStmt) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement(aStmt);
-        //stmt.set
-                
-        return stmt;
     }
 
     public void commit() throws SQLException {

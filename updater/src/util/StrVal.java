@@ -1,4 +1,3 @@
-
 package util;
 
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class StrVal {
     public static String sntS(String input) {
         StringBuilder r = new StringBuilder(input.length());
         r.setLength(input.length());
-        
+
         int current = 0;
         for (int i = 0; i < input.length(); i++) {
             char cur = input.charAt(i);
@@ -36,7 +35,7 @@ public class StrVal {
     //To be used with cmflS
     public static String unCmflS(String input) {
         String output = "";
-        
+
         if (input != null && !input.equals("")) {
             output = input.replace("/$/", "'");
         }
@@ -61,19 +60,19 @@ public class StrVal {
         }
         return isValid;
     }
-    
-    public static boolean hasDuplicates(ArrayList<String> aStrings, String aString){
+
+    public static boolean hasDuplicates(ArrayList<String> aStrings, String aString) {
         boolean hasDuplicates = false;
-        
-        for(int i=0; i<aStrings.size(); i++){
-            if(aStrings.get(i).equalsIgnoreCase(aString)){
+
+        for (int i = 0; i < aStrings.size(); i++) {
+            if (aStrings.get(i).equalsIgnoreCase(aString)) {
                 hasDuplicates = true;
                 break;
             }
         }
         return hasDuplicates;
     }
-    
+
     public static String SqlStringToString(String aSqlDate) {
         String date = "";
         String day = null, month = null, year = null;

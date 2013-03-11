@@ -51,21 +51,34 @@ public class Fetcher {
     }
 
     public void createFeed(Feed aFeed) throws SQLException {
-        String update = ""
-                + "INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
-                + "('" + aFeed.getAuthor() + "', '" + aFeed.getTitle() + "', '"
-                + aFeed.getContent() + "', " + aFeed.getStatus() + ") ";
-
-        con.sendUpdate(update);
+        //replaced by prepared statement.
+//        String update = ""
+//                + "INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
+//                + "('" + aFeed.getAuthor() + "', '" + aFeed.getTitle() + "', '"
+//                + aFeed.getContent() + "', " + aFeed.getStatus() + ") ";
+        
+        PreparedStatement ps = con.prepareStatement("INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
+                + "(?,?,?,?)");
+        
+        ps.setString(1, aFeed.getAuthor());
+        ps.setString(2, aFeed.getTitle());
+        ps.setString(3, aFeed.getContent());
+        ps.setInt(4, aFeed.getStatus());
+        
+        ps.executeUpdate();
     }
 
     public Feed fetchFeed(int anID) throws SQLException {
         Feed feed = null;
 
-        ResultSet feedR = con.sendQuery(""
+        PreparedStatement ps = con.prepareStatement(""
                 + "SELECT * "
                 + "FROM microfeed "
-                + "WHERE microID = " + anID);
+                + "WHERE microID = ?");
+        
+        ps.setInt(1, anID);
+        
+        ResultSet feedR = ps.executeQuery();
 
         while (feedR.next()) {
             feed = new Feed(feedR.getInt("microID"), feedR.getString("Author"),
