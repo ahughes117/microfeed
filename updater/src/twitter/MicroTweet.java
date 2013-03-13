@@ -1,6 +1,7 @@
 package twitter;
 
 import java.io.IOException;
+import sql.Connector;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -30,12 +31,18 @@ public class MicroTweet {
         ta = (TwitterAuth) Credentials.loadCredentials("twitter.dat");
 
         if (ta != null) {
+            
             //Creating and authorising twitter object...
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(ta.getConsumerKey(), ta.getConsumerKeySecret());
             AccessToken oathAccessToken = new AccessToken(ta.getAccessToken(),
                     ta.getAccessTokenSecret());
             twitter.setOAuthAccessToken(oathAccessToken);
+            twitter.verifyCredentials();
+                        
+            if(Connector.LOGGER) {
+                System.out.println("Twitter Authorisation Successful...");
+            }
         } else {
             throw(new IOException());
         }
