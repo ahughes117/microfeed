@@ -7,16 +7,16 @@ package gui;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import microfeed.*;
-import net.atlanticbb.tantlinger.shef.HTMLEditorPane;
 import sql.*;
+import twitter.MicroTweet;
+import twitter4j.TwitterException;
 import util.*;
 
 /**
@@ -33,29 +33,39 @@ public class MainFrame extends GUI {
     private GUI pFrame;
     private Connector con;
     private Fetcher fetcher;
-    private HTMLEditorPane hep;
+    private MicroTweet microtweet;
 
     public MainFrame(GUI aPreviousFrame, Connector aConnector) {
         pFrame = aPreviousFrame;
         con = aConnector;
         fetcher = new Fetcher(con);
 
-        hep = new HTMLEditorPane();
-        hep.setVisible(true);
         initComponents();
         this.addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent e) {
                 shutdown();
             }
         });
-        
+
+        //initialising main functionality
         try {
             loadFeeds();
             loadAuthors();
             loadDraft();
         } catch (SQLException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        //initialising twitter functionality
+        try {
+            microtweet = new MicroTweet();
+            statusL.setText(statusL.getText() + " || Twitter Connected.");
+        } catch (TwitterException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            statusL.setText(statusL.getText() + " || Twitter Disconnected.");
+        } catch (IOException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            statusL.setText(statusL.getText() + " || Twitter Disconnected.");
         }
 
         super.setFrameLocationCenter(this);
@@ -85,7 +95,7 @@ public class MainFrame extends GUI {
         authorCombo.removeAllItems();
 
         for (int i = 0; i < fetcher.getAuthors().size(); i++) {
-            authorCombo.addItem((String) fetcher.getAuthors().get(i));
+            authorCombo.addItem((String)fetcher.getAuthors().get(i));
         }
     }
 
@@ -201,7 +211,7 @@ public class MainFrame extends GUI {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * This function checks whether the database schema is compatible with the
      * application. Changes may arise to the database schema that are not
@@ -209,7 +219,6 @@ public class MainFrame extends GUI {
      *
      */
     public void checkSchema() {
-        
     }
 
     /**
@@ -228,6 +237,7 @@ public class MainFrame extends GUI {
         publishBtn = new javax.swing.JButton();
         draftBtn = new javax.swing.JButton();
         previewBtn = new javax.swing.JButton();
+        tweetChk = new javax.swing.JCheckBox();
         tinyfeedPanel = new javax.swing.JPanel();
         authorLbl = new javax.swing.JLabel();
         titleF = new javax.swing.JTextField();
@@ -251,8 +261,8 @@ public class MainFrame extends GUI {
         panelCont = new javax.swing.JScrollPane();
         mainMenu = new javax.swing.JMenuBar();
         fileM = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         helpM = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -304,6 +314,8 @@ public class MainFrame extends GUI {
             }
         });
 
+        tweetChk.setText("Tweet");
+
         javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
         buttonPanel.setLayout(buttonPanelLayout);
         buttonPanelLayout.setHorizontalGroup(
@@ -317,7 +329,9 @@ public class MainFrame extends GUI {
                 .addComponent(previewBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(quitBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(tweetChk)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         buttonPanelLayout.setVerticalGroup(
             buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,7 +341,8 @@ public class MainFrame extends GUI {
                     .addComponent(publishBtn)
                     .addComponent(draftBtn)
                     .addComponent(previewBtn)
-                    .addComponent(quitBtn))
+                    .addComponent(quitBtn)
+                    .addComponent(tweetChk))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -360,7 +375,7 @@ public class MainFrame extends GUI {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(titleF)
-                    .addComponent(authorCombo, 0, 365, Short.MAX_VALUE)
+                    .addComponent(authorCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(contentPane))
                 .addContainerGap())
         );
@@ -520,7 +535,7 @@ public class MainFrame extends GUI {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -541,7 +556,7 @@ public class MainFrame extends GUI {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 516, Short.MAX_VALUE)
+            .addComponent(panelCont, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -552,6 +567,14 @@ public class MainFrame extends GUI {
 
         fileM.setText("File");
 
+        jMenuItem5.setText("Set Up Twitter");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        fileM.add(jMenuItem5);
+
         jMenuItem2.setText("Disconnect");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -559,14 +582,6 @@ public class MainFrame extends GUI {
             }
         });
         fileM.add(jMenuItem2);
-
-        jMenuItem3.setText("Check DB Schema");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        fileM.add(jMenuItem3);
 
         jMenuItem4.setText("Exit");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
@@ -696,10 +711,11 @@ public class MainFrame extends GUI {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        checkSchema();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
-
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        if (!TwitterFrame.isInstanceAlive()) {
+            new TwitterFrame();
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton allFeedsBtn;
     private javax.swing.JComboBox authorCombo;
@@ -715,8 +731,8 @@ public class MainFrame extends GUI {
     private javax.swing.JMenu helpM;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -736,5 +752,6 @@ public class MainFrame extends GUI {
     private javax.swing.JPanel tinyfeedPanel;
     private javax.swing.JTextField titleF;
     private javax.swing.JLabel titleLbl;
+    private javax.swing.JCheckBox tweetChk;
     // End of variables declaration//GEN-END:variables
 }

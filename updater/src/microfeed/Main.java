@@ -1,5 +1,9 @@
 package microfeed;
 import gui.LoginFrame;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import twitter.MicroTweet;
+import twitter4j.TwitterException;
 /**
  * This is the desktop application for creating new feeds and updating the feed
  * @author Alex Hughes <alexhughes117@gmail.com>

@@ -1,3 +1,4 @@
 /updater/nbproject/private/
 /updater/build/
-/updater/DBCredentials.dat
+/updater/db.dat
+/updater/twitter.dat

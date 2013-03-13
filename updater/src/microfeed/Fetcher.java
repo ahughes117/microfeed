@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.*;
 import sql.*;
 
+
 /**
  * Class Fetcher This class contains the main functionality for the microfeed
  * application.
@@ -21,7 +22,7 @@ public class Fetcher {
     }
 
     public ArrayList<Feed> fetchFeeds() throws SQLException {
-        feeds = new ArrayList();
+        feeds = new ArrayList<Feed>();
         Feed feed;
         ResultSet feedR = con.sendQuery(""
                 + "SELECT * "
@@ -38,7 +39,7 @@ public class Fetcher {
     }
 
     public ArrayList<String> fetchAuthors() throws SQLException {
-        authors = new ArrayList();
+        authors = new ArrayList<String>();
 
         ResultSet authorR = con.sendQuery(""
                 + "SELECT DISTINCT Author "

@@ -14,6 +14,7 @@ import sql.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import util.Credentials;
 import util.MesDial;
 
 /**
@@ -23,7 +24,7 @@ import util.MesDial;
  */
 public class LoginFrame extends GUI {
 
-    public DBCredentials credentials;
+    private DBCredentials credentials;
     private char passwordc[];
     private Connector con;
 
@@ -34,7 +35,7 @@ public class LoginFrame extends GUI {
 
         initComponents();
 
-        credentials = (DBCredentials) DBCredentials.loadCredentials("DBCredentials.dat");
+        credentials = (DBCredentials) Credentials.loadCredentials("db.dat");
         if (credentials != null) {
             loadCredentials();
         }
