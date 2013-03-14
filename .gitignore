@@ -1,4 +1,4 @@
 /updater/nbproject/private/
 /updater/build/
-/updater/db.dat
-/updater/twitter.dat
+/updater/*.dat
+/updater/store/*.dat
