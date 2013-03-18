@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.BadLocationException;
 import microfeed.*;
 import sql.*;
 import twitter.MicroTweet;
@@ -95,7 +96,7 @@ public class MainFrame extends GUI {
         authorCombo.removeAllItems();
 
         for (int i = 0; i < fetcher.getAuthors().size(); i++) {
-            authorCombo.addItem((String)fetcher.getAuthors().get(i));
+            authorCombo.addItem((String) fetcher.getAuthors().get(i));
         }
     }
 
@@ -147,8 +148,8 @@ public class MainFrame extends GUI {
     private void createFeed(boolean isDraft) {
 
         //setting -1 as status, it's not a draft nor a post yet
-        Feed feed = new Feed(StrVal.sntS((String) authorCombo.getSelectedItem()),
-                StrVal.sntS(titleF.getText()), textArea.getText(), -1);
+        Feed feed = new Feed((String) authorCombo.getSelectedItem(),
+                titleF.getText(), textArea.getText(), -1);
 
         //setting the appropriate status
         if (isDraft) {
@@ -159,17 +160,22 @@ public class MainFrame extends GUI {
 
         //inserting in the database the created field.
         try {
-            fetcher.createFeed(feed);
+            int microID = fetcher.createFeed(feed);
 
             //creating the appropriate message for the user
             if (isDraft) {
                 statusL.setText("Draft saved successfully! || "
                         + new Date());
             } else {
+                if (tweetChk.isSelected()) {
+                    microtweet.updateStatus(composeTweet());
+                }
                 MesDial.postSuccess(this);
             }
         } catch (SQLException ex) {
             MesDial.conError(this);
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TwitterException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -183,6 +189,29 @@ public class MainFrame extends GUI {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    /**
+     * Composes a suitable tweet for the microfeed post, using the title and the
+     * content. Makes sure that the tweet is less than 140 characters
+     *
+     * @return
+     */
+    public String composeTweet() {
+        String tweet = "";
+        String titleSeparator = " || ";
+        String urlSeparator = " - ";
+
+        //misc mandatory text length
+        int tweetN = 140;
+        int separatorN = titleSeparator.length() + urlSeparator.length();
+        int urlN = 22;
+
+        //if title is longer than 140 chars.
+
+
+
+        return tweet;
     }
 
     /**

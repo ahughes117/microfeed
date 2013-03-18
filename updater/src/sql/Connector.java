@@ -78,7 +78,7 @@ public class Connector {
     }
 
     public PreparedStatement prepareStatement(String aQuery) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(aQuery);
+        PreparedStatement ps = connection.prepareStatement(aQuery, Statement.RETURN_GENERATED_KEYS);
         return ps;
     }
 

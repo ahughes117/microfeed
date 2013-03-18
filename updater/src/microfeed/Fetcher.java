@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.*;
 import sql.*;
 
-
 /**
  * Class Fetcher This class contains the main functionality for the microfeed
  * application.
@@ -51,22 +50,26 @@ public class Fetcher {
         return authors;
     }
 
-    public void createFeed(Feed aFeed) throws SQLException {
-        //replaced by prepared statement.
-//        String update = ""
-//                + "INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
-//                + "('" + aFeed.getAuthor() + "', '" + aFeed.getTitle() + "', '"
-//                + aFeed.getContent() + "', " + aFeed.getStatus() + ") ";
-        
-        PreparedStatement ps = con.prepareStatement("INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
+    public int createFeed(Feed aFeed) throws SQLException {
+        int microID = -1;
+
+        PreparedStatement ps = con.prepareStatement(""
+                + "INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
                 + "(?,?,?,?)");
-        
+
         ps.setString(1, aFeed.getAuthor());
         ps.setString(2, aFeed.getTitle());
         ps.setString(3, aFeed.getContent());
         ps.setInt(4, aFeed.getStatus());
-        
+
         ps.executeUpdate();
+        ResultSet keyR = ps.getGeneratedKeys();
+
+        while (keyR.next()) {
+            microID = keyR.getInt(1);
+        }
+
+        return microID;
     }
 
     public Feed fetchFeed(int anID) throws SQLException {
@@ -76,9 +79,9 @@ public class Fetcher {
                 + "SELECT * "
                 + "FROM microfeed "
                 + "WHERE microID = ?");
-        
+
         ps.setInt(1, anID);
-        
+
         ResultSet feedR = ps.executeQuery();
 
         while (feedR.next()) {
