@@ -33,6 +33,7 @@ public class MesDial {
     private static String rowSelectionError = "You have to pick exactly one row.";
     //
     private static String deleteQuestion = "Delete?";
+    private static String tweetQuestion = "Tweet microfeed?";
     private static String exitQuestion = "Exit Minifeed Updater? Any unsaved changes will be lost.";
     private static String newGroupDialog = "Insert the name of the new Group: ";
     private static String newDatabaseDialog = "Insert the name of the database schema: ";
@@ -81,6 +82,13 @@ public class MesDial {
         Object[] options = {"ΟΚ", "Cancel"};
 
         return JOptionPane.showOptionDialog(null, deleteQuestion, "Confirmation Needed", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+    }
+    
+    public static int tweetQuestion(GUI aFrame, String aTweet) {
+        Object[] options = {"ΟΚ", "Cancel"};
+
+        return JOptionPane.showOptionDialog(null, tweetQuestion + "\n'" + aTweet + "'", "Confirmation Needed", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
     }
     

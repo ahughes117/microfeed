@@ -31,7 +31,7 @@ public class MicroTweet {
         ta = (TwitterAuth) Credentials.loadCredentials("twitter.dat");
 
         if (ta != null) {
-            
+
             //Creating and authorising twitter object...
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(ta.getConsumerKey(), ta.getConsumerKeySecret());
@@ -39,12 +39,12 @@ public class MicroTweet {
                     ta.getAccessTokenSecret());
             twitter.setOAuthAccessToken(oathAccessToken);
             twitter.verifyCredentials();
-                        
-            if(Connector.LOGGER) {
+
+            if (Connector.LOGGER) {
                 System.out.println("Twitter Authorisation Successful...");
             }
         } else {
-            throw(new IOException());
+            throw (new IOException());
         }
     }
 
@@ -58,8 +58,39 @@ public class MicroTweet {
         //twitter.updateStatus(aStatus);
         if (aStatus.length() <= 140) {
             System.out.println(aStatus);
+            //twitter.updateStatus(aStatus);
         } else {
             throw new TwitterException("Max Character Error");
         }
+    }
+
+    /**
+     * Composes a suitable tweet for the microfeed post, using the title and the
+     * content. Makes sure that the tweet is less than 140 characters
+     *
+     * @param aTitle
+     * @param aContent
+     * @param aLink
+     * @return
+     */
+    public String composeTweet(String aTitle, String aLink) {
+        String tweet;
+
+        String urlSeparator = " || ";
+
+        //text lengths
+        int tweetN = 140;
+        int urlN = aLink.length();  //better safe than sorry
+        int separN = 4;
+
+        //if title + url is less than 140, tweet as is.
+        if (aTitle.length() + separN + urlN < tweetN) {
+            tweet = aTitle + urlSeparator + aLink;
+        } else {
+            tweet = aTitle.substring(0, tweetN - urlN - separN - 3);
+            tweet += "..." + urlSeparator + aLink;
+        }
+
+        return tweet;
     }
 }

@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS `microfeed` (
   `microID` bigint(20) NOT NULL auto_increment,
   `Author` varchar(32) NOT NULL,
-  `Title` varchar(64) NOT NULL,
+  `Title` text NOT NULL,
   `Content` text NOT NULL,
   `DatePosted` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Status` tinyint NOT NULL,

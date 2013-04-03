@@ -158,7 +158,7 @@ public class MainFrame extends GUI {
             feed.setStatus(1);
         }
 
-        //inserting in the database the created field.
+        //inserting in the database and tweeting the created feed.
         try {
             int microID = fetcher.createFeed(feed);
 
@@ -167,8 +167,19 @@ public class MainFrame extends GUI {
                 statusL.setText("Draft saved successfully! || "
                         + new Date());
             } else {
+                //sending the microtweet if operation selected by user.
                 if (tweetChk.isSelected()) {
-                    microtweet.updateStatus(composeTweet());
+
+                    //find a way to soft code it
+                    String link = "http://microfeed.ahughes.org/?microID=" + microID;
+
+                    //creating the actual tweet and finally tweeting it
+                    String tweet = microtweet.composeTweet(titleF.getText(), link);
+                    
+                    int ans = MesDial.tweetQuestion(this, tweet);
+                    if (ans == JOptionPane.YES_OPTION) {
+                        microtweet.updateStatus(tweet);
+                    }
                 }
                 MesDial.postSuccess(this);
             }
@@ -189,29 +200,6 @@ public class MainFrame extends GUI {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    /**
-     * Composes a suitable tweet for the microfeed post, using the title and the
-     * content. Makes sure that the tweet is less than 140 characters
-     *
-     * @return
-     */
-    public String composeTweet() {
-        String tweet = "";
-        String titleSeparator = " || ";
-        String urlSeparator = " - ";
-
-        //misc mandatory text length
-        int tweetN = 140;
-        int separatorN = titleSeparator.length() + urlSeparator.length();
-        int urlN = 22;
-
-        //if title is longer than 140 chars.
-
-
-
-        return tweet;
     }
 
     /**
