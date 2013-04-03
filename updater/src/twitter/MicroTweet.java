@@ -58,7 +58,7 @@ public class MicroTweet {
         //twitter.updateStatus(aStatus);
         if (aStatus.length() <= 140) {
             System.out.println(aStatus);
-            //twitter.updateStatus(aStatus);
+            twitter.updateStatus(aStatus);
         } else {
             throw new TwitterException("Max Character Error");
         }
