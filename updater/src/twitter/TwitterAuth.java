@@ -14,6 +14,9 @@ public class TwitterAuth extends Credentials implements Serializable {
     private String consumerKeySecret;
     private String accessToken;
     private String accessTokenSecret;
+    //the url of the website
+    private String url;
+    
 
     /**
      * Full Constructor
@@ -23,11 +26,13 @@ public class TwitterAuth extends Credentials implements Serializable {
      * @param accessToken
      * @param accessTokenSecret 
      */
-    public TwitterAuth(String consumerKey, String consumerKeySecret, String accessToken, String accessTokenSecret) {
+    public TwitterAuth(String consumerKey, String consumerKeySecret, String accessToken, 
+            String accessTokenSecret, String url) {
         this.consumerKey = consumerKey;
         this.consumerKeySecret = consumerKeySecret;
         this.accessToken = accessToken;
         this.accessTokenSecret = accessTokenSecret;
+        this.url = url;
     }
 
     public String getConsumerKey() {
@@ -44,5 +49,9 @@ public class TwitterAuth extends Credentials implements Serializable {
 
     public String getAccessTokenSecret() {
         return accessTokenSecret;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

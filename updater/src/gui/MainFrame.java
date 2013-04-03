@@ -171,11 +171,11 @@ public class MainFrame extends GUI {
                 if (tweetChk.isSelected()) {
 
                     //find a way to soft code it
-                    String link = "http://microfeed.ahughes.org/?microID=" + microID;
+                    String link = "http://microfeed.ahughes.org/" + "?microID=" + microID;
 
                     //creating the actual tweet and finally tweeting it
                     String tweet = microtweet.composeTweet(titleF.getText(), link);
-                    
+
                     int ans = MesDial.tweetQuestion(this, tweet);
                     if (ans == JOptionPane.YES_OPTION) {
                         microtweet.updateStatus(tweet);
