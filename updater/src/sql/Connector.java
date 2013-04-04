@@ -78,7 +78,19 @@ public class Connector {
     }
 
     public PreparedStatement prepareStatement(String aQuery) throws SQLException {
-        PreparedStatement ps = connection.prepareStatement(aQuery, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement ps;
+        
+        if(connection.isValid(1)){
+            ps = connection.prepareStatement(aQuery, Statement.RETURN_GENERATED_KEYS);
+        } else {
+            try {
+                reConnect();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Connector.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ps = connection.prepareStatement(aQuery, Statement.RETURN_GENERATED_KEYS);
+        }
+        
         return ps;
     }
 
