@@ -40,5 +40,8 @@ This is the webpage-like presentable stream.
         }
         echo "<p><a href='?feedN=$feedN'>More Feeds</a></p>";
         ?>
+	<p>Microfeed is proudly powered by <a 
+href="http://github.com/ahughes117/microfeed/">Microfeed</a>. 
+MicrofeedCeption.</p>
     </body>
 </html>
