@@ -71,6 +71,25 @@ public class Fetcher {
 
         return microID;
     }
+    
+    public void updateFeed(Feed aFeed) throws SQLException {
+        
+        String query = ""
+                + "UPDATE `microfeed` SET "
+                + "`Author` = ?, "
+                + "`Title` = ?, "
+                + "`Content` = ? "
+                + "WHERE microID = ? ";
+        
+        PreparedStatement ps = con.prepareStatement(query);
+        
+        ps.setString(1, aFeed.getAuthor());
+        ps.setString(2, aFeed.getTitle());
+        ps.setString(3, aFeed.getContent());
+        ps.setInt(4, aFeed.getMicroID());
+        
+        ps.executeUpdate();
+    }
 
     public Feed fetchFeed(int anID) throws SQLException {
         Feed feed = null;

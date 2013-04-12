@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import microfeed.Feed;
+import microfeed.Fetcher;
 import sql.*;
 import util.MesDial;
 import util.StrVal;
@@ -106,9 +107,9 @@ public class FeedFrame extends GUI {
 
         dateL.setText("Date: ");
 
-        timestampL.setText("null");
+        timestampL.setText(null);
 
-        feedIDL.setText("null");
+        feedIDL.setText(null);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -190,9 +191,9 @@ public class FeedFrame extends GUI {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(cancelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(okBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -235,12 +236,15 @@ public class FeedFrame extends GUI {
 
     private void okBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okBtnActionPerformed
         try {
-            con.sendUpdate(""
-                    + "UPDATE microfeed SET Author = '"
-                    + StrVal.sntS(authorF.getText())
-                    + "', Title = '" + StrVal.sntS(titleF.getText())
-                    + "', Content = '" + StrVal.sntS(contentArea.getText()) + "' "
-                    + "WHERE microID = " + feed.getMicroID());
+            //parsing parameters.
+            feed.setAuthor(authorF.getText());
+            feed.setTitle(titleF.getText());
+            feed.setContent(contentArea.getText());
+            
+            //creating fetcher object and updating feed.
+            Fetcher fetcher = new Fetcher(con);
+            fetcher.updateFeed(feed);
+            
             shutdown();
         } catch (SQLException ex) {
             MesDial.conError(this);

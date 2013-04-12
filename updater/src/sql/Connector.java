@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class Connector {
 
-    public static boolean AUTOCOMMIT;
+    public static boolean AUTOCOMMIT = true;
     public static boolean LOGGER;
     public static boolean QUERY;
     protected Connection connection;
@@ -50,8 +50,7 @@ public class Connector {
         connection = DriverManager.getConnection(conString, connProperties);
 
         //hardcoding the autocommit...
-        connection.setAutoCommit(false);
-        AUTOCOMMIT = false;
+        connection.setAutoCommit(AUTOCOMMIT);
         printInfo();    //used to print info of the connection
     }
 
