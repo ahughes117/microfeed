@@ -10,7 +10,7 @@ class Configuration {
     //database user
     public $db_usr = 'root';
     //database password
-    public $db_pass = 'sth';
+    public $db_pass = 'password';
     //database schema
     public $db_schema = 'microfeed';
     
@@ -37,13 +37,17 @@ class Configuration {
            
     
     //feed title
-    public $fd_title = "Alex Hughes' Minifeed";
+    public $fd_title = "Alex Hughes' Microfeed";
     //feed
-    public $fd = 'http://localhost/microfeed/';
+    public $fd = 'http://microfeed.ahughes.org/';
     //feed link
-    public $fd_link = "http://localhost/microfeed/?microID=";
+    public $fd_link = 
+"http://microfeed.ahughes.org?microID=";
     //feed id
     public $fd_id = "tag:ahughes.org,2013:http://localhost/microfeed/microID=";
+    
+    //feed image
+    public $fd_img = "http://ahughes.org/images/ahughes.jpg";
     
     //author name
     public $auth_name = "Alex Hughes";

@@ -1,0 +1,15 @@
+[08-Mar-2013 20:45:37] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES) in /home/ahughes/public_html/microfeed/index.php on line 23
+[08-Mar-2013 20:45:39] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES) in /home/ahughes/public_html/microfeed/index.php on line 23
+[08-Mar-2013 20:45:40] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Access denied for user 'root'@'localhost' (using password: YES) in /home/ahughes/public_html/microfeed/index.php on line 23
+[12-Mar-2013 19:17:16] PHP Parse error:  syntax error, unexpected T_CLASS, expecting ',' or ';' in /home/ahughes/public_html/microfeed/page.php on line 18
+[12-Mar-2013 19:17:28] PHP Parse error:  syntax error, unexpected '/' in /home/ahughes/public_html/microfeed/page.php on line 14
+[12-Mar-2013 19:17:52] PHP Parse error:  syntax error, unexpected '/' in /home/ahughes/public_html/microfeed/page.php on line 14
+[29-Mar-2013 22:00:05] PHP Parse error:  syntax error, unexpected '<' in /home/ahughes/public_html/microfeed/page.php on line 18
+[29-Mar-2013 22:00:07] PHP Parse error:  syntax error, unexpected '<' in /home/ahughes/public_html/microfeed/page.php on line 18
+[29-Mar-2013 22:00:27] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting ',' or ';' in /home/ahughes/public_html/microfeed/page.php on line 20
+[29-Mar-2013 22:00:29] PHP Parse error:  syntax error, unexpected T_VARIABLE, expecting ',' or ';' in /home/ahughes/public_html/microfeed/page.php on line 20
+[03-Apr-2013 20:19:21] PHP Parse error:  syntax error, unexpected '<' in /home/ahughes/public_html/microfeed/page.php on line 53
+[03-Apr-2013 20:19:32] PHP Parse error:  syntax error, unexpected '<' in /home/ahughes/public_html/microfeed/page.php on line 53
+[03-Apr-2013 20:20:33] PHP Parse error:  syntax error, unexpected '/' in /home/ahughes/public_html/microfeed/page.php on line 53
+[03-Apr-2013 20:20:34] PHP Parse error:  syntax error, unexpected '/' in /home/ahughes/public_html/microfeed/page.php on line 53
+[04-Apr-2013 15:07:11] PHP Warning:  mysql_connect() [<a href='function.mysql-connect'>function.mysql-connect</a>]: Too many connections in /home/ahughes/public_html/microfeed/feed.php on line 13
