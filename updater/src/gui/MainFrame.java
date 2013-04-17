@@ -4,16 +4,16 @@
  */
 package gui;
 
-import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.text.BadLocationException;
 import microfeed.*;
 import sql.*;
 import twitter.MicroTweet;
@@ -35,6 +35,7 @@ public class MainFrame extends GUI {
     private Connector con;
     private Fetcher fetcher;
     private MicroTweet microtweet;
+    private int microID = -1;
 
     public MainFrame(GUI aPreviousFrame, Connector aConnector) {
         pFrame = aPreviousFrame;
@@ -133,16 +134,40 @@ public class MainFrame extends GUI {
     }
 
     /**
-     * Reloads feeds and author combo
+     * Sends the latest draft to the browser.
      */
-    private void refresh() {
-        try {
-            loadFeeds();
-            loadAuthors();
-        } catch (SQLException ex) {
-            MesDial.conError(this);
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+    private void preview() {
+        String link = microtweet.getUrl() + "?microID=" + microID;
+
+        //checking if operation is supported
+        if (java.awt.Desktop.isDesktopSupported()) {
+            //getting desktop object and checking if BROWSE operation is supported
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                //checking if microID is in cache
+                if (microID != -1) {
+                    try {
+                        URI uri = new URI(link);
+                        desktop.browse(uri);
+                    } catch (IOException ex) {
+                        // browser exception error
+                        MesDial.browserError(this);
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (URISyntaxException ex) {
+                        //wrong URI error
+                        MesDial.uriError(this);
+                        Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    MesDial.nullMicroError(this);
+                }
+            } else {
+                MesDial.browseNotSupportedError(this);
+            }
+        } else {
+            MesDial.awtNotSupportedError(this);
         }
+
     }
 
     private void createFeed(boolean isDraft) {
@@ -160,7 +185,7 @@ public class MainFrame extends GUI {
 
         //inserting in the database and tweeting the created feed.
         try {
-            int microID = fetcher.createFeed(feed);
+            microID = fetcher.createFeed(feed);
 
             //creating the appropriate message for the user
             if (isDraft) {
@@ -170,8 +195,7 @@ public class MainFrame extends GUI {
                 //sending the microtweet if operation selected by user.
                 if (tweetChk.isSelected()) {
 
-                    //find a way to soft code it
-                    String link = "http://microfeed.ahughes.org/" + "?microID=" + microID;
+                    String link = microtweet.getUrl() + "?microID=" + microID;
 
                     //creating the actual tweet and finally tweeting it
                     String tweet = microtweet.composeTweet(titleF.getText(), link);
@@ -367,13 +391,17 @@ public class MainFrame extends GUI {
 
         authorLbl.setText("Author:");
 
+        titleF.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
         titleLbl.setText("Title:");
 
         contentLbl.setText("Content:");
 
         authorCombo.setEditable(true);
+        authorCombo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
 
         textArea.setColumns(20);
+        textArea.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         textArea.setLineWrap(true);
         textArea.setRows(5);
         textArea.setWrapStyleWord(true);
@@ -411,7 +439,7 @@ public class MainFrame extends GUI {
                 .addGroup(tinyfeedPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(tinyfeedPanelLayout.createSequentialGroup()
                         .addComponent(contentLbl)
-                        .addGap(0, 136, Short.MAX_VALUE))
+                        .addGap(0, 130, Short.MAX_VALUE))
                     .addComponent(contentPane))
                 .addContainerGap())
         );
@@ -644,14 +672,10 @@ public class MainFrame extends GUI {
     }//GEN-LAST:event_quitBtnActionPerformed
 
     private void previewBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previewBtnActionPerformed
-        refresh();
+        preview();
     }//GEN-LAST:event_previewBtnActionPerformed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_F5) {
-            refresh();
-            System.out.println("REFRESH");
-        }
     }//GEN-LAST:event_formKeyPressed
 
     private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped

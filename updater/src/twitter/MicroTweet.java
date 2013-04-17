@@ -63,6 +63,11 @@ public class MicroTweet {
             throw new TwitterException("Max Character Error");
         }
     }
+    
+    //returns the URL
+    public String getUrl() {
+        return ta.getUrl();
+    }
 
     /**
      * Composes a suitable tweet for the microfeed post, using the title and the

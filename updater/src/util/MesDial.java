@@ -31,6 +31,12 @@ public class MesDial {
     private static String validDatabaseError = "You have to type in a valid database schema name";
     private static String dbSchemaError = "The database version is not compatible with the application version";
     private static String rowSelectionError = "You have to pick exactly one row.";
+    private static String browserError = "URL could not be sent to the browser. Something is probably wrong with the permissions of your system :-(";
+    private static String uriError = "The URL you have set is invalid. Go to Twitter setup and enter the correct one.";
+    private static String nullMicroError = "There is not microID in cache. Try saving a draft first and try again.";
+    private static String browseNotSupportedError = "The BROWSE operation is not supported on your system";
+    private static String awtNotSupportedError = "AWT desktop is not supported on this machine";
+    
     //
     private static String deleteQuestion = "Delete?";
     private static String tweetQuestion = "Tweet microfeed?";
@@ -121,6 +127,26 @@ public class MesDial {
     
     public static void selectGroupError(GUI aFrame) {
         JOptionPane.showMessageDialog(aFrame, selectGroupError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void browserError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, browserError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void uriError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, uriError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void nullMicroError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, nullMicroError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void browseNotSupportedError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, browseNotSupportedError, "Error!", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public static void awtNotSupportedError(GUI aFrame) {
+        JOptionPane.showMessageDialog(aFrame, awtNotSupportedError, "Error!", JOptionPane.ERROR_MESSAGE);
     }
     
     public static void validGroupError(GUI aFrame) {
