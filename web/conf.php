@@ -8,11 +8,11 @@ class Configuration {
     //database url
     public $db_url = 'localhost';
     //database user
-    public $db_usr = 'root';
+    public $db_usr = 'aUser';
     //database password
-    public $db_pass = 'password';
+    public $db_pass = 'aPassword';
     //database schema
-    public $db_schema = 'microfeed';
+    public $db_schema = 'aSchema';
     
     //database table structure
     public $db_id = 'microID';
@@ -47,7 +47,7 @@ class Configuration {
     public $fd_id = "tag:ahughes.org,2013:http://localhost/microfeed/microID=";
     
     //feed image
-    public $fd_img = "http://ahughes.org/images/ahughes.jpg";
+    public $fd_img = "img/ahughes.jpg";
     
     //author name
     public $auth_name = "Alex Hughes";

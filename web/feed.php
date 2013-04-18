@@ -58,7 +58,7 @@ function date3339($timestamp = 0) {
         $articleDate = $row[$conf->db_date];
         $articleDateRfc3339 = date3339(strtotime($articleDate));
         echo "<entry>";
-        echo "<title>";
+        echo '<title type="html">';
         echo $row['Title'];
         echo "</title>";
         echo "<link type='text/html' href='". $conf->fd_link . $row[$conf->db_id] . "'/>";
@@ -73,9 +73,9 @@ function date3339($timestamp = 0) {
         echo $row['Author'];
         echo "</name>";
         echo "</author>";
-        echo "<summary>";
+        echo '<summary type="html"><![CDATA[';
         echo $row['Content'];
-        echo "</summary>";
+        echo "]]></summary>";
         $i++;
     }
     ?>

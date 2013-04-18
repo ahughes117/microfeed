@@ -14,7 +14,8 @@ function fetchFeeds($conf, $number) {
     <td width="101" height="146"><img src="' . $conf->fd_img . '" width="134" height="134" /></td>
     <td>
     <p class = "fd_title">Alex Hughes || microfeeds: </p><p> </p>
-    <p class="fd_content">You can have them freshly baked on your plate everyday 
+    <p class="fd_content">You can have them fresh on your plate 
+everyday 
         using your favourite feed reader: <a href="http://microfeed.ahughes.org/feed.php">
 "http://microfeed.ahughes.org/feed.php"</a></p>
     </td>
