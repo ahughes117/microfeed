@@ -391,17 +391,23 @@ public class MainFrame extends GUI {
 
         authorLbl.setText("Author:");
 
+        titleF.setBackground(new java.awt.Color(62, 0, 104));
         titleF.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        titleF.setForeground(new java.awt.Color(204, 204, 204));
 
         titleLbl.setText("Title:");
 
         contentLbl.setText("Content:");
 
+        authorCombo.setBackground(new java.awt.Color(62, 0, 104));
         authorCombo.setEditable(true);
         authorCombo.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        authorCombo.setForeground(new java.awt.Color(204, 204, 204));
 
+        textArea.setBackground(new java.awt.Color(62, 0, 104));
         textArea.setColumns(20);
         textArea.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        textArea.setForeground(new java.awt.Color(204, 204, 204));
         textArea.setLineWrap(true);
         textArea.setRows(5);
         textArea.setWrapStyleWord(true);
