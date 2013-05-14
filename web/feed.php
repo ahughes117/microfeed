@@ -1,23 +1,30 @@
 <?php
-
 /*
  * All functionality of the micro-atom-feed 
  */
 
-include 'conf.php';
+//uncomment following 2 lines for debugging mode
+//error_reporting(E_ALL | E_STRICT);
+//ini_set("display_errors", "1");
 
-$conf = new Configuration();
+require_once ('mysql.php');
 
 header('Content-type: text/xml');
 
-$link = mysql_connect($conf->db_url, $conf->db_usr, $conf->db_pass)
-        or die('Could not connect: ' . mysql_error());
+global $con;
+global $conf;
 
-mysql_select_db($conf->db_schema)
-        or die('Could not select database');
+$stmt = $con->prepare_statement($conf->db_get_feeds);
 
-$result = mysql_query($conf->db_query)
-        or die('Query failed: ' . mysql_error());
+if (!$stmt)
+    echo "<p>Ouch. Something really wrong happened. Apologies</p>";
+
+//hardcoding the default feed size
+$limit = 50;
+$stmt->bind_param("i", $limit);
+$stmt->execute();
+$stmt->bind_result($id, $title, $content, $date, $author);
+$stmt->store_result();
 
 echo "<?xml version='1.0' encoding='UTF-8' ?>";
 
@@ -51,30 +58,29 @@ function date3339($timestamp = 0) {
 
     <?php
     $i = 0;
-    while ($row = mysql_fetch_array($result)) {
+    while ($stmt->fetch()) {
         if ($i > 0) {
             echo "</entry>";
         }
-        $articleDate = $row[$conf->db_date];
-        $articleDateRfc3339 = date3339(strtotime($articleDate));
+        $articleDateRfc3339 = date3339(strtotime($date));
         echo "<entry>";
         echo '<title type="html">';
-        echo $row['Title'];
+        echo $title;
         echo "</title>";
-        echo "<link type='text/html' href='". $conf->fd_link . $row[$conf->db_id] . "'/>";
+        echo "<link type='text/html' href='" . $conf->fd_link . $id . "'/>";
         echo "<id>";
-        echo $conf->fd_id . $row[$conf->db_id];
+        echo $conf->fd_id . $id;
         echo "</id>";
         echo "<updated>";
         echo $articleDateRfc3339;
         echo "</updated>";
         echo "<author>";
         echo "<name>";
-        echo $row['Author'];
+        echo $author;
         echo "</name>";
         echo "</author>";
         echo '<summary type="html"><![CDATA[';
-        echo $row['Content'];
+        echo $content;
         echo "]]></summary>";
         $i++;
     }

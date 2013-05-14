@@ -1,7 +1,19 @@
 @charset "utf-8";
 
 body {
-	background-color: #3e0068;
+	background-color: #300051;
+	width: 1050px;
+	margin: 0 auto;
+}
+
+.wrapper {
+	border-top: 1px solid #CCC;
+}
+
+.fd_img_center {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .fd_content {

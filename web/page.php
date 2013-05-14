@@ -4,62 +4,83 @@
  * Functionality for feed webpage.
  */
 
-function fetchFeeds($conf, $number) {
+require_once ('conf.php');
 
-    $result = mysql_query($conf->db_query . "LIMIT " . $number)
-            or die('Query failed: ' . mysql_error());
+/**
+ * This function fetches and prints the feeds out of the database.
+ * $number = SQL LIMIT 
+ * 
+ * @global type $con
+ * @global type $conf
+ * @param type $number
+ * @return type
+ * @throws Exception
+ */
+function fetch_feeds($number) {
+    global $con;
+    global $conf;
 
-    $header = '<table border="0" cellspacing="5" cellpadding="5">
-  <tr>
-    <td width="101" height="146"><img src="' . $conf->fd_img . '" width="134" height="134" /></td>
-    <td>
-    <p class = "fd_title">Alex Hughes || microfeeds: </p><p> </p>
-    <p class="fd_content">You can have them fresh on your plate 
-everyday 
-        using your favourite feed reader: <a href="http://microfeed.ahughes.org/feed.php">
-"http://microfeed.ahughes.org/feed.php"</a></p>
-    </td>
-  </tr>
-</table>';
+    try {
+        $stmt = $con->prepare_statement($conf->db_get_feeds);
 
-    echo $header;
-    
-    echo '<p>&nbsp</p>';
+        //checking if query is bad written or DB table does not exist
+        if (!$stmt)
+            throw new Exception();
 
-    $i = 0;
-    while ($row = mysql_fetch_array($result)) {
-        echo '<p class = "fd_title"><strong><a href="' . $conf->fd_link . $row[$conf->db_id] . '">' .
-        $row[$conf->db_title] . "</a></strong></p>";
+        $stmt->bind_param("i", $number);
+        $stmt->execute();
+        $stmt->bind_result($db_id, $db_title, $db_content, $db_date, $db_author);
+        $stmt->store_result();
 
-        echo '<p class="fd_content"><blockquote>' . $row[$conf->db_content] . '</blockquote></p>';
-        $i++;
+        //Writing the posts on the page
+        echo '<p>&nbsp;</p>';
+        while ($stmt->fetch()) {
+            echo "<div class='wrapper'><p class = 'fd_title'><a href='{$conf->fd_link}{$db_id}'>{$db_title}</a></p>";
+            echo "<p class='fd_content'><blockquote>{$db_content}</blockquote></p></div>";
+        }
+    } catch (Exception $x) {
+        echo "<p>Either there are no feeds in the DB or something bad happened...</p>";
     }
+    $stmt->close();
     return $number;
 }
 
-function fetchFeed($conf, $id) {
+function fetch_feed($id) {
 
-    $result = mysql_query($conf->db_getFeed . $id)
-            or die('Query failed: ' . mysql_error());
+    global $con;
+    global $conf;
 
-    $i = 0;
-    while ($row = mysql_fetch_array($result)) {
-        echo "<p><strong>" . $row[$conf->db_title] . "</strong></p>";
+    try {
+        $stmt = $con->prepare_statement($conf->db_get_feed);
 
-        echo "<p><blockquote>" . $row[$conf->db_content] . "</blockquote></p>";
-        echo "<p>" . date('D M jS, h:i:s', strtotime($row[$conf->db_date])) . "</p>";
-        /* echo "<p><a href='" . $conf->fd . "'>Back to microfeed stream 
-          </a></p>"; */
+        //checking if query is bad written or DB table does not exist
+        if (!$stmt)
+            throw new Exception();
 
-        $i++;
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->bind_result($db_id, $db_title, $db_content, $db_date);
+        $stmt->store_result();
+
+        //Writing the post on the page
+        echo '<p>&nbsp;</p>';
+        if ($stmt->num_rows == 0)
+            echo "<p>Either you tried to inject SQL but to no avail, OR (more likely) you're looking for something that
+                <i>shall not exist, will not exist, or died and does not exist anymore.</i></p>
+                <p>Apologies for that.</p>";
+        else
+            while ($stmt->fetch()) {
+                echo "<div class='wrapper'><p class='fd_title'>{$db_title}</p>";
+                echo "<p><blockquote>{$db_content}</blockquote></p>";
+                $date = gmdate('D M jS, H:i:s', strtotime($db_date));
+                echo "<p>{$date} Greenwich Mean Time (<a href='http://en.wikipedia.org/wiki/Greenwich_Mean_Time' 
+        target='_blank'>GMT</a>)</p></div>";
+            }
+    } catch (Exception $x) {
+        echo "<p>Either there are no feeds in the DB or something bad happened...</p>";
     }
-    if ($i == 0) {
-        echo "<p><strong>Either you are trying to inject SQL or the thing you 
-            are looking for doesn't exist <anymore, hasn't ever existed, 
-            whatever>.</strong></p>";
-        /* echo "<p><a href='" . $conf->fd . "'>Back to microfeed 
-          stream</a></p>"; */
-    }
+    $stmt->close();
+    return 0;
 }
 
 ?>

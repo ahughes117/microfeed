@@ -7,8 +7,11 @@ This is the webpage-like presentable stream.
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>
             <?php
-            include 'conf.php';
-            $conf = new Configuration();
+            //uncomment following 2 lines for debugging mode
+            //error_reporting(E_ALL | E_STRICT);
+            //ini_set("display_errors", "1");
+            
+            global $conf;
             echo $conf->fd_title;
             ?>
         </title>
@@ -18,30 +21,25 @@ This is the webpage-like presentable stream.
         <?php
         //initial number of feeds
         $feedN = 10;
-        include 'page.php';
-
-        $link = mysql_connect($conf->db_url, $conf->db_usr, $conf->db_pass)
-                or die('Could not connect: ' . mysql_error());
-
-        mysql_set_charset("utf8");
-
-        mysql_select_db($conf->db_schema)
-                or die('Could not select database');
-
+        
+        require_once ('mysql.php');
+        require_once ('header.php');
+        require_once ('page.php');
+        
         $microID = htmlspecialchars($_GET["microID"]);
 
         if (htmlspecialchars($_GET["feedN"]) != NULL)
             $feedN = htmlspecialchars($_GET["feedN"]);
 
         if ($microID != null) {
-            fetchFeed($conf, $microID);
+            fetch_feed($microID);
         } else {
-            $feedN += fetchFeeds($conf, $feedN);
+            $feedN += fetch_feeds($feedN);
         }
         echo "<p><a href='?feedN=$feedN'>More Feeds</a></p>";
         ?>
-	<p>Microfeed is proudly powered by <a 
-href="http://github.com/ahughes117/microfeed/">Microfeed</a>. 
-MicrofeedCeption.</p>
+        <p>Microfeed is proudly powered by <a 
+                href="http://github.com/ahughes117/microfeed/">Microfeed</a>. 
+            MicrofeedCeption.</p>
     </body>
 </html>
