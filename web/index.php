@@ -10,6 +10,7 @@ This is the webpage-like presentable stream.
             //uncomment following 2 lines for debugging mode
             //error_reporting(E_ALL | E_STRICT);
             //ini_set("display_errors", "1");
+            require_once ('mysql.php');
             
             global $conf;
             echo $conf->fd_title;
@@ -22,7 +23,6 @@ This is the webpage-like presentable stream.
         //initial number of feeds
         $feedN = 10;
         
-        require_once ('mysql.php');
         require_once ('header.php');
         require_once ('page.php');
         
