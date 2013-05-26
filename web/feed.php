@@ -23,7 +23,7 @@ if (!$stmt)
 $limit = 50;
 $stmt->bind_param("i", $limit);
 $stmt->execute();
-$stmt->bind_result($id, $title, $content, $date, $author);
+$stmt->bind_result($id, $title, $alias, $content, $date, $author);
 $stmt->store_result();
 
 echo "<?xml version='1.0' encoding='UTF-8' ?>";
@@ -67,7 +67,7 @@ function date3339($timestamp = 0) {
         echo '<title type="html">';
         echo $title;
         echo "</title>";
-        echo "<link type='text/html' href='" . $conf->fd_link . $id . "'/>";
+        echo "<link type='text/html' href='" . $conf->fd_link_id . $id . "'/>";
         echo "<id>";
         echo $conf->fd_id . $id;
         echo "</id>";
