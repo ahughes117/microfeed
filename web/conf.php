@@ -4,7 +4,12 @@
  * Configuration file for minifeed
  */
 
+global $conf;
+$conf = new Configuration();
+
+//Configuration file for microfeed. (Still a mess)
 class Configuration {
+    
     //database url
     public $db_url = 'localhost';
     //database user
@@ -13,27 +18,18 @@ class Configuration {
     public $db_pass = 'aPassword';
     //database schema
     public $db_schema = 'aSchema';
-    
-    //database table structure
-    public $db_id = 'microID';
-    public $db_title = 'Title';
-    public $db_author = 'Author';
-    public $db_content = 'Content';
-    public $db_date = 'DatePosted';
-    public $db_status = 'Status';
-    public $db_table = 'microfeed';
-    
-    //TODO Find a way to write the query soft coded 
-    public $db_query = "
-        SELECT * 
+        
+    public $db_get_feeds = "
+        SELECT microID, Title, Content, DatePosted, Author
         FROM microfeed 
         WHERE Status = 1 
-        ORDER BY DatePosted DESC "; 
+        ORDER BY DatePosted DESC 
+        LIMIT ? "; 
     
-    public $db_getFeed = "
-        SELECT * 
+    public $db_get_feed = "
+        SELECT microID, Title, Content, DatePosted
         FROM microfeed
-        WHERE microID = ";
+        WHERE microID = ? ";
            
     
     //feed title
@@ -41,13 +37,29 @@ class Configuration {
     //feed
     public $fd = 'http://microfeed.ahughes.org/';
     //feed link
-    public $fd_link = 
-"http://microfeed.ahughes.org?microID=";
+    public $fd_link = "http://microfeed.ahughes.org?microID=";
     //feed id
-    public $fd_id = "tag:ahughes.org,2013:http://localhost/microfeed/microID=";
+    public $fd_id = "tag:ahughes.org,2013:http://microfeed.ahughes.org/microID=";
     
     //feed image
     public $fd_img = "img/ahughes.jpg";
+    //header image
+    public $fd_header_img = "img/header.jpg";
+    
+    //The header text customisable to your needs etc (don't touch text between hashes)
+    public $header = "<p><img src='#header_img#' width=1000 height='127' /></p>
+        <table border='0' cellspacing='5' cellpadding='5'>
+        <tr>
+        <td width='101' height='146'><img src='#fd_img#' width='134' height='134' />
+        </td>
+        <td>
+        <p class = 'fd_title'>Alex Hughes || microfeeds: </p>
+        <p class='fd_content'>You can have them fresh on your plate everyday
+        using your favourite feed reader: 
+        <a href='http://microfeed.ahughes.org/feed.php'>'http://microfeed.ahughes.org/feed.php'</a></p>
+        <p>Special thanks to my friend and colleague 
+        <a href='http://www.karenpasquel.co.uk' target='_blank'>Karen</a> 
+        for the 5 minute godly touches on my horrible CSS file.</p> </td></tr></table>";
     
     //author name
     public $auth_name = "Alex Hughes";
