@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package sql;
 
 
@@ -9,7 +6,7 @@ import util.Credentials;
 import java.io.*;
 
 /**
- *
+ * The DB credential entity class
  * @author Alex Hughes
  */
 public class DBCredentials extends Credentials implements Serializable {

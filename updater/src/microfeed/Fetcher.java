@@ -3,6 +3,7 @@ package microfeed;
 import java.sql.*;
 import java.util.*;
 import sql.*;
+import util.StrVal;
 
 /**
  * Class Fetcher This class contains the main functionality for the microfeed
@@ -29,7 +30,7 @@ public class Fetcher {
 
         while (feedR.next()) {
             feed = new Feed(feedR.getInt("microID"), feedR.getString("Author"),
-                    feedR.getString("Title"), feedR.getString("Content"),
+                    feedR.getString("Title"), feedR.getString("Alias"), feedR.getString("Content"),
                     feedR.getTimestamp("DatePosted"), feedR.getInt("Status"));
 
             feeds.add(feed);
@@ -54,13 +55,14 @@ public class Fetcher {
         int microID = -1;
 
         PreparedStatement ps = con.prepareStatement(""
-                + "INSERT INTO `microfeed` (`Author`, `Title`, `Content`, `Status`) VALUES "
-                + "(?,?,?,?)");
+                + "INSERT INTO `microfeed` (`Author`, `Title`, `Alias`, `Content`, `Status`) VALUES "
+                + "(?,?,?,?,?)");
 
         ps.setString(1, aFeed.getAuthor());
         ps.setString(2, aFeed.getTitle());
-        ps.setString(3, aFeed.getContent());
-        ps.setInt(4, aFeed.getStatus());
+        ps.setString(3, StrVal.createAlias(aFeed.getTitle()));
+        ps.setString(4, aFeed.getContent());
+        ps.setInt(5, aFeed.getStatus());
 
         ps.executeUpdate();
         ResultSet keyR = ps.getGeneratedKeys();
@@ -78,6 +80,7 @@ public class Fetcher {
                 + "UPDATE `microfeed` SET "
                 + "`Author` = ?, "
                 + "`Title` = ?, "
+                + "`Alias` = ? "
                 + "`Content` = ? "
                 + "WHERE microID = ? ";
         
@@ -85,6 +88,7 @@ public class Fetcher {
         
         ps.setString(1, aFeed.getAuthor());
         ps.setString(2, aFeed.getTitle());
+        ps.setString(3, StrVal.createAlias(aFeed.getTitle()));
         ps.setString(3, aFeed.getContent());
         ps.setInt(4, aFeed.getMicroID());
         
@@ -105,7 +109,7 @@ public class Fetcher {
 
         while (feedR.next()) {
             feed = new Feed(feedR.getInt("microID"), feedR.getString("Author"),
-                    feedR.getString("Title"), feedR.getString("Content"),
+                    feedR.getString("Title"), feedR.getString("Alias"),feedR.getString("Content"),
                     feedR.getTimestamp("DatePosted"), feedR.getInt("Status"));
         }
 
@@ -130,8 +134,7 @@ public class Fetcher {
                 + "LIMIT 1 ");
 
         while (draftR.next()) {
-            draft = new Feed(draftR.getString("Author"), draftR.getString("Title"),
-                    draftR.getString("Content"), 0);
+            draft = new Feed(draftR.getString("Author"), draftR.getString("Title"), draftR.getString("Content"), 0);
         }
 
         return draft;

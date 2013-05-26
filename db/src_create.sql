@@ -9,10 +9,12 @@ CREATE TABLE IF NOT EXISTS `microfeed` (
   `microID` bigint(20) NOT NULL auto_increment,
   `Author` varchar(32) NOT NULL,
   `Title` text NOT NULL,
+  `Alias` varchar(200) NOT NULL,
   `Content` text NOT NULL,
   `DatePosted` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Status` tinyint NOT NULL,
-  PRIMARY KEY  (`microID`)
+  PRIMARY KEY  (`microID`),
+  UNIQUE INDEX `Alias_UNIQUE` (`Alias` ASC) 
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 

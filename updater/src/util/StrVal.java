@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
+ * String Utility Class. Various helper functions lie here.
  *
  * @author Alex Hughes
  */
 public class StrVal {
 
-    //This function replaces all quotes (') with dollar sign characters ($)
-    public static String cmflS(String input) {
-
-        String output = input.replace("'", "/$/");
-        return output;
-    }
-
-    //This function removes all quotes characters(')
+    /**
+     * This function removes all quotes characters(')
+     *
+     * @param input
+     * @return
+     */
     public static String sntS(String input) {
         StringBuilder r = new StringBuilder(input.length());
         r.setLength(input.length());
@@ -31,25 +30,46 @@ public class StrVal {
         return r.toString();
     }
 
-    //This function replaces all dollar sign characters($) with quotes (')
-    //To be used with cmflS
-    public static String unCmflS(String input) {
-        String output = "";
-
-        if (input != null && !input.equals("")) {
-            output = input.replace("/$/", "'");
+    /**
+     * Creates an alias for the feed, making use of the title. Rules: No special
+     * characters are allowed. Spaces are converted to dashes Also, max string
+     * length is 255 characters
+     *
+     * @param aTitle
+     * @return
+     */
+    public static String createAlias(String aTitle) {
+        //regular expression that only allows alphanumerics and whitespace
+        String alias = aTitle.replaceAll("[^a-zA-Z0-9 ]+", "");
+        alias = alias.replaceAll(" ", "-");
+        
+        if (alias.length() >= 255) {
+            alias = alias.substring(0, 255);
         }
-        return output;
+
+        return alias;
     }
 
-    //This function returns the result of the subtraction of our desired 
-    //limit and the string length.
+    /**
+     * This function returns the result of the subtraction of our desired limit
+     * and the string length.
+     *
+     * @param input
+     * @param aLimit
+     * @return
+     */
     public static int measureString(String input, int aLimit) {
         int result = input.length() - aLimit;
         return result;
     }
 
-    //This function returns whether a string has a valid length.
+    /**
+     * This function returns whether a string has a valid length.
+     *
+     * @param input
+     * @param aLimit
+     * @return
+     */
     public static boolean validStringLength(String input, int aLimit) {
         boolean isValid;
 

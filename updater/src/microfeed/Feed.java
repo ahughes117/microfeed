@@ -13,6 +13,7 @@ public class Feed {
     private int microID;
     private String author;
     private String title;
+    private String alias;
     private String content;
     private Timestamp datePosted;
     private int status;
@@ -23,15 +24,17 @@ public class Feed {
      * @param microID
      * @param author
      * @param title
+     * @param alias
      * @param content
      * @param datePosted 
      * @param status
      */
-    public Feed(int microID, String author, String title, String content, 
+    public Feed(int microID, String author, String title, String alias, String content, 
             Timestamp datePosted, int status) {
         this.microID = microID;
         this.author = author;
         this.title = title;
+        this.alias = alias;
         this.content = content;
         this.datePosted = datePosted;
         this.status = status;
@@ -42,6 +45,7 @@ public class Feed {
      * 
      * @param author
      * @param title
+     * @param alias
      * @param content 
      * @param status 
      */
@@ -74,6 +78,14 @@ public class Feed {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+    
+    public String getAlias() {
+        return alias;
+    }
+    
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     public Timestamp getDatePosted() {
