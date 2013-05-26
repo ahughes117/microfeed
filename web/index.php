@@ -27,13 +27,16 @@ This is the webpage-like presentable stream.
         require_once ('page.php');
         
         $microID = htmlspecialchars($_GET["microID"]);
+        $alias = htmlspecialchars($_GET["alias"]);
 
         if (htmlspecialchars($_GET["feedN"]) != NULL)
             $feedN = htmlspecialchars($_GET["feedN"]);
 
-        if ($microID != null) {
-            fetch_feed($microID);
-        } else {
+        if ($microID != null && $alias == null) {
+            fetch_feed($microID, "id");
+        } elseif ($alias != null && $microID == null) {
+            fetch_feed($alias, "alias");
+        }else {
             $feedN += fetch_feeds($feedN);
         }
         echo "<p><a href='?feedN=$feedN'>More Feeds</a></p>";

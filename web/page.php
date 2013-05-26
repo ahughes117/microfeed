@@ -29,13 +29,13 @@ function fetch_feeds($number) {
 
         $stmt->bind_param("i", $number);
         $stmt->execute();
-        $stmt->bind_result($db_id, $db_title, $db_content, $db_date, $db_author);
+        $stmt->bind_result($db_id, $db_title, $db_alias, $db_content, $db_date, $db_author);
         $stmt->store_result();
 
         //Writing the posts on the page
         echo '<p>&nbsp;</p>';
         while ($stmt->fetch()) {
-            echo "<div class='wrapper'><p class = 'fd_title'><a href='{$conf->fd_link}{$db_id}'>{$db_title}</a></p>";
+            echo "<div class='wrapper'><p class = 'fd_title'><a href='{$conf->fd_link_alias}{$db_alias}'>{$db_title}</a></p>";
             echo "<p class='fd_content'><blockquote>{$db_content}</blockquote></p></div>";
         }
     } catch (Exception $x) {
@@ -45,19 +45,28 @@ function fetch_feeds($number) {
     return $number;
 }
 
-function fetch_feed($id) {
+function fetch_feed($param, $method) {
 
     global $con;
     global $conf;
 
     try {
-        $stmt = $con->prepare_statement($conf->db_get_feed);
+        if (strcmp($method, "id") == 0)
+            $stmt = $con->prepare_statement($conf->db_get_feed_id);
+        elseif (strcmp($method, "alias") == 0)
+            $stmt = $con->prepare_statement($conf->db_get_feed_alias);
+        else
+            throw new Exception();
 
         //checking if query is bad written or DB table does not exist
         if (!$stmt)
             throw new Exception();
 
-        $stmt->bind_param("i", $id);
+        if (strcmp($method, "id") == 0)
+            $stmt->bind_param("i", $param);
+        elseif (strcmp($method, "alias") == 0)
+            $stmt->bind_param("s", $param);
+        
         $stmt->execute();
         $stmt->bind_result($db_id, $db_title, $db_content, $db_date);
         $stmt->store_result();

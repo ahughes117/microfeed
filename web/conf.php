@@ -20,24 +20,30 @@ class Configuration {
     public $db_schema = 'aSchema';
         
     public $db_get_feeds = "
-        SELECT microID, Title, Content, DatePosted, Author
+        SELECT microID, Title, Alias, Content, DatePosted, Author
         FROM microfeed 
         WHERE Status = 1 
         ORDER BY DatePosted DESC 
         LIMIT ? "; 
     
-    public $db_get_feed = "
+    public $db_get_feed_id = "
         SELECT microID, Title, Content, DatePosted
         FROM microfeed
         WHERE microID = ? ";
            
+    public $db_get_feed_alias = "
+        SELECT microID, Title, Content, DatePosted 
+        FROM microfeed 
+        WHERE alias = ? ";
     
     //feed title
     public $fd_title = "Alex Hughes' Microfeed";
     //feed
     public $fd = 'http://microfeed.ahughes.org/';
-    //feed link
-    public $fd_link = "http://microfeed.ahughes.org?microID=";
+    //feed link using id
+    public $fd_link_id = "http://microfeed.ahughes.org?microID=";
+    //feed link using alias
+    public $fd_link_alias = "http://microfeed.ahughes.org?alias=";
     //feed id
     public $fd_id = "tag:ahughes.org,2013:http://microfeed.ahughes.org/microID=";
     
