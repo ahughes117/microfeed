@@ -60,7 +60,13 @@ public class Fetcher {
 
         ps.setString(1, aFeed.getAuthor());
         ps.setString(2, aFeed.getTitle());
-        ps.setString(3, StrVal.createAlias(aFeed.getTitle()));
+        
+        //if the feed is draft, filling a uuid as an alias.
+        if(aFeed.getStatus() == 1)
+            ps.setString(3, StrVal.createAlias(aFeed.getTitle()));
+        else
+            ps.setString(3, UUID.randomUUID().toString().replaceAll("-", ""));
+        
         ps.setString(4, aFeed.getContent());
         ps.setInt(5, aFeed.getStatus());
 

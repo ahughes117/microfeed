@@ -20,7 +20,7 @@ class Configuration {
     public $db_schema = 'aSchema';
         
     public $db_get_feeds = "
-        SELECT microID, Title, Alias, Content, DatePosted, Author
+        SELECT microID, Title, Alias, Content, DatePosted, Author 
         FROM microfeed 
         WHERE Status = 1 
         ORDER BY DatePosted DESC 
@@ -34,7 +34,7 @@ class Configuration {
     public $db_get_feed_alias = "
         SELECT microID, Title, Content, DatePosted 
         FROM microfeed 
-        WHERE alias = ? ";
+        WHERE Alias = ? ";
     
     //feed title
     public $fd_title = "Alex Hughes' Microfeed";
