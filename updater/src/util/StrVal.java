@@ -47,7 +47,7 @@ public class StrVal {
             alias = alias.substring(0, 255);
         }
 
-        return alias;
+        return alias.toLowerCase();
     }
 
     /**
