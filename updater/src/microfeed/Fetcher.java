@@ -86,7 +86,7 @@ public class Fetcher {
                 + "UPDATE `microfeed` SET "
                 + "`Author` = ?, "
                 + "`Title` = ?, "
-                + "`Alias` = ? "
+                + "`Alias` = ?, "
                 + "`Content` = ? "
                 + "WHERE microID = ? ";
         
@@ -95,8 +95,8 @@ public class Fetcher {
         ps.setString(1, aFeed.getAuthor());
         ps.setString(2, aFeed.getTitle());
         ps.setString(3, StrVal.createAlias(aFeed.getTitle()));
-        ps.setString(3, aFeed.getContent());
-        ps.setInt(4, aFeed.getMicroID());
+        ps.setString(4, aFeed.getContent());
+        ps.setInt(5, aFeed.getMicroID());
         
         ps.executeUpdate();
     }
