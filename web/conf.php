@@ -69,5 +69,12 @@ class Configuration {
     
     //author name
     public $auth_name = "Alex Hughes";
+    
+    //MI6 Tracker configuration follows
+    public $mi6_url = "aUrl";
+    public $mi6_user = "aUser";
+    public $mi6_pass = "aPass";
+    public $mi6_schema = "aSchema";
+    public $mi6_enabled = true;
 }
 ?>
