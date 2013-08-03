@@ -21,5 +21,6 @@ if (isset($_POST['ip'])) {
 }
 
 //closing the connection
-close_connection();
+close_connection(); 
+
 ?>

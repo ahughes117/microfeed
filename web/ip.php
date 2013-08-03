@@ -232,6 +232,11 @@ function update_hits($ip, $domain, $agent) {
     }
 }
 
+/**
+ * Helper function to close MI6 connection
+ * 
+ * @global type $con
+ */
 function close_connection() {
     global $con;
     $con->close_connection();
