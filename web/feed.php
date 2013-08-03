@@ -1,4 +1,13 @@
 <?php
+
+//Including MI6 tracker
+include_once ('mysql_mi6.php');
+$conf;
+
+if ($conf->mi6_enabled) {
+    include('tracker.php');
+}
+
 /*
  * All functionality of the micro-atom-feed 
  */

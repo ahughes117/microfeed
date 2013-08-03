@@ -1,3 +1,12 @@
+<?php
+    //Including MI6 tracker
+    include_once ('mysql_mi6.php');
+    $conf;
+    
+    if($conf->mi6_enabled) {
+        include('tracker.php');
+    }
+?>
 <!--
 This is the webpage-like presentable stream.
 -->
@@ -8,8 +17,8 @@ This is the webpage-like presentable stream.
         <title>
             <?php
             //uncomment following 2 lines for debugging mode
-            //error_reporting(E_ALL | E_STRICT);
-            //ini_set("display_errors", "1");
+//            error_reporting(E_ALL | E_STRICT);
+//            ini_set("display_errors", "1");
             require_once ('mysql.php');
             
             global $conf;

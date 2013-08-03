@@ -11,11 +11,11 @@ $conf = new Configuration();
 class Configuration {
     
     //database url
-    public $db_url = 'localhost';
+    public $db_url = 'aUrl';
     //database user
     public $db_usr = 'aUser';
     //database password
-    public $db_pass = 'aPassword';
+    public $db_pass = 'aPass';
     //database schema
     public $db_schema = 'aSchema';
         

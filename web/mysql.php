@@ -5,7 +5,7 @@
  *
  * @author ahughes
  */
-require ('conf.php');
+require_once ('conf.php');
 
 global $con;
 $con = new MySQL();

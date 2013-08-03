@@ -56,12 +56,12 @@ function acquire_ip_details($ip_addr) {
 /**
  * Inserts an IP with full details in the database
  * 
- * @global type $con
+ * @global type $mi6_con
  * @return boolean
  * @throws Exception
  */
 function insert_ip() {
-    global $con;
+    global $mi6_con;
     $ip = acquire_ip_details($_SERVER['REMOTE_ADDR']);
 
     //if address exists, just update hits.
@@ -74,7 +74,7 @@ function insert_ip() {
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) ";
 
         try {
-            $stmt = $con->prepare_statement($query);
+            $stmt = $mi6_con->prepare_statement_mi6($query);
 
             //checking if query well written
             if (!$stmt)
@@ -94,7 +94,7 @@ function insert_ip() {
 /**
  * Inserts a requested IP with full details in the database
  * 
- * @global type $con
+ * @global type $mi6_con
  * @param type $ip_addr
  */
 function insert_request($ip_addr) {
@@ -107,14 +107,14 @@ function insert_request($ip_addr) {
     if (ip_exists($ip->ip, $ip->domain, $ip->agent) == true) {
         update_hits($ip->ip, $ip->domain, $ip->agent);
     } else {
-        global $con;
+        global $mi6_con;
         $query = "
             INSERT INTO ip (ip, agent, domain, Request, RequestSource, Hostname, 
             City, Region, Country, CountryCode, Latitude, Longitude, DateCreated) VALUES 
             (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) ";
 
         try {
-            $stmt = $con->prepare_statement($query);
+            $stmt = $mi6_con->prepare_statement_mi6($query);
 
             //checking if query well written
             if (!$stmt)
@@ -134,13 +134,13 @@ function insert_request($ip_addr) {
 /**
  * Checks whether an IP exists in the database
  * 
- * @global type $con
+ * @global type $mi6_con
  * @param type $ip_addr
  * @param type $request
  * @return null
  */
 function ip_exists($ip_addr, $domain, $agent) {
-    global $con;
+    global $mi6_con;
 
     $query = "
         SELECT ip 
@@ -148,7 +148,7 @@ function ip_exists($ip_addr, $domain, $agent) {
         WHERE ip = ? AND agent = ? AND domain = ? ";
 
     try {
-        $stmt = $con->prepare_statement($query);
+        $stmt = $mi6_con->prepare_statement_mi6($query);
 
         //checking if query well written
         if (!$stmt)
@@ -174,7 +174,7 @@ function ip_exists($ip_addr, $domain, $agent) {
 /**
  * Increments the hits of an ip by one.
  * 
- * @global type $con
+ * @global type $mi6_con
  * @param type $ip
  * @param type $agent
  * @param type $domain
@@ -182,7 +182,7 @@ function ip_exists($ip_addr, $domain, $agent) {
  * @throws Exception
  */
 function update_hits($ip, $domain, $agent) {
-    global $con;
+    global $mi6_con;
 
     $sel_query = "
         SELECT Hits 
@@ -196,7 +196,7 @@ function update_hits($ip, $domain, $agent) {
 
     try {
         //first acquiring current hits
-        $stmt = $con->prepare_statement($sel_query);
+        $stmt = $mi6_con->prepare_statement_mi6($sel_query);
 
         //checking if query well written
         if (!$stmt)
@@ -213,7 +213,7 @@ function update_hits($ip, $domain, $agent) {
         $stmt = null;
 
         //now updating them
-        $stmt = $con->prepare_statement($upd_query);
+        $stmt = $mi6_con->prepare_statement_mi6($upd_query);
 
         //checking if query well written again
         if (!$stmt)
@@ -235,11 +235,11 @@ function update_hits($ip, $domain, $agent) {
 /**
  * Helper function to close MI6 connection
  * 
- * @global type $con
+ * @global type $mi6_con
  */
 function close_connection() {
-    global $con;
-    $con->close_connection();
+    global $mi6_con;
+    $mi6_con->close_connection();
 }
 
 ?>

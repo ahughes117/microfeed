@@ -8,8 +8,8 @@
 
 require_once('conf.php');
 
-global $con;
-$con = new MySQLMI6();
+global $mi6_con;
+$mi6_con = new MySQLMI6();
 
 class MySQLMI6 {
 
@@ -28,7 +28,7 @@ class MySQLMI6 {
      * @param type $aStatement
      * @return type
      */
-    public function prepare_statement($aStatement) {
+    public function prepare_statement_mi6($aStatement) {
         return ($this->mysqli->prepare($aStatement));
     }
 
