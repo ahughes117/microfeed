@@ -19,8 +19,8 @@ class MySQL {
         $this->conf = new Configuration();
         $this->mysqli = new mysqli($this->conf->db_url, $this->conf->db_usr, $this->conf->db_pass, $this->conf->db_schema);
     }
-
-    /**
+    
+     /**
      * This function creates and returns a prepared statement.
      * If stmt == NULL, then query is not written properly, or DB_ERROR occured
      * 

@@ -19,4 +19,7 @@ if (isset($_POST['ip'])) {
         $request_ip = insert_request($ip);
     }
 }
+
+//closing the connection
+close_connection();
 ?>

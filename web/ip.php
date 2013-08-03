@@ -1,6 +1,6 @@
 <?php
 
-require_once ('mysql.php');
+require_once ('mysql_mi6.php');
 
 class Ip {
 
@@ -230,6 +230,11 @@ function update_hits($ip, $domain, $agent) {
     } catch (Exception $x) {
         return false;
     }
+}
+
+function close_connection() {
+    global $con;
+    $con->close_connection();
 }
 
 ?>

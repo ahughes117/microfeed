@@ -2,3 +2,4 @@
 /updater/build/
 /updater/*.dat
 /updater/store/*.dat
+/web/nbproject/
