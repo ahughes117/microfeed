@@ -11,13 +11,13 @@ $conf = new Configuration();
 class Configuration {
     
     //database url
-    public $db_url = 'aUrl';
+    public $db_url = 'localhost';
     //database user
-    public $db_usr = 'aUser';
+    public $db_usr = 'root';
     //database password
-    public $db_pass = 'aPass';
+    public $db_pass = 'AineGifi117';
     //database schema
-    public $db_schema = 'aSchema';
+    public $db_schema = 'ahughes_microfeed';
         
     public $db_get_feeds = "
         SELECT microID, Title, Alias, Content, DatePosted, Author 
@@ -71,10 +71,10 @@ class Configuration {
     public $auth_name = "Alex Hughes";
     
     //MI6 Tracker configuration follows
-    public $mi6_url = "aUrl";
-    public $mi6_user = "aUser";
-    public $mi6_pass = "aPass";
-    public $mi6_schema = "aSchema";
+    public $mi6_url = "localhost";
+    public $mi6_user = "root";
+    public $mi6_pass = "AineGifi117";
+    public $mi6_schema = "mi6";
     public $mi6_enabled = true;
 }
 ?>

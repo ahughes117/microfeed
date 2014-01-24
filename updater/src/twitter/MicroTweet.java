@@ -55,7 +55,6 @@ public class MicroTweet {
      * @throws TwitterException
      */
     public void updateStatus(String aStatus) throws TwitterException {
-        //twitter.updateStatus(aStatus);
         if (aStatus.length() <= 140) {
             System.out.println(aStatus);
             twitter.updateStatus(aStatus);
