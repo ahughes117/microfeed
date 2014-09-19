@@ -6,6 +6,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 import util.Credentials;
 
 /**
@@ -32,6 +33,14 @@ public class MicroTweet {
 
         if (ta != null) {
 
+            //altering the configuration to use SSL otherwise it will fail miserably after the changes
+            ConfigurationBuilder cb = new ConfigurationBuilder();
+            cb.setOAuthAuthenticationURL("https://api.twitter.com/oauth/request_token");
+            cb.setOAuthAccessTokenURL("https://api.twitter.com/oauth/access_token");
+            cb.setOAuthAuthorizationURL("https://api.twitter.com/oauth/access_token");
+            cb.setOAuthRequestTokenURL("https://api.twitter.com/oauth/request_token");
+            cb.setRestBaseURL("https://api.twitter.com/1.1/");
+            
             //Creating and authorising twitter object...
             twitter = new TwitterFactory().getInstance();
             twitter.setOAuthConsumer(ta.getConsumerKey(), ta.getConsumerKeySecret());
